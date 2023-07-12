@@ -12,6 +12,8 @@ export default {
   html {
       overflow-y: scroll;
       box-sizing: border-box;
+      --background:#052630;
+      --color:#f2efe5;
   }
   *,
   ::before,
@@ -22,7 +24,7 @@ export default {
       font-size: calc(0.5em + 1vw);
   }
   body {
-  margin: 0;
+      margin: 0;
   }
   div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,blockquote,p {
       padding: 0;
@@ -61,4 +63,9 @@ export default {
     width: 100%;
     height: 100vh;
   }  
+  button{
+    outline: none;
+    border:none;
+    cursor:pointer;
+  }
 </style>
