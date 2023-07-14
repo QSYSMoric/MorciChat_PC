@@ -10,6 +10,7 @@ const routes = [
     {
         path:"/Login",
         name:"Login",
+        redirect:"/Operatelogin",
         component:()=>import('@/views/MoricLogin/MoricLogin.vue'),
         children:MoricLoginContentRoutes
     }

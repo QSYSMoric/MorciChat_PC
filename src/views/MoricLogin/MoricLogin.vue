@@ -24,7 +24,14 @@
             </div>
         </div>
         <div class="MoricLoginOperate">
-            <router-view></router-view>
+            <router-view #default="{route,Component}">
+                <transition 
+                :leave-active-class="`animate__animated ${route.meta.outTransition}`"
+                :enter-active-class="`animate__animated ${route.meta.inTransition}`">
+                    <component :is="Component">
+                    </component>
+                </transition>
+            </router-view>
         </div>
     </div>
 </template>
@@ -41,7 +48,7 @@ export default {
         width: 100%;
         height: 100vh;
         display: grid;
-        grid-template-columns: 50% 1fr;
+        grid-template-columns: 50% 50%;
     }
     .login_background{
         width: 100%;
@@ -103,7 +110,9 @@ export default {
     .MoricLoginOperate{
         width: 100%;
         height: 100%;
+        padding-left: 25px;
         display: flex;
+        overflow: hidden;
         align-items: center;
     }
     @media(max-width:767px){
@@ -112,9 +121,11 @@ export default {
             width: 100%;
             height: 100vh;
             display: grid;
+            padding: 0;
             grid-template-columns: 1fr;
         }
         .MoricLoginOperate{
+            padding-left: 0;
             width: 100%;
             height: 100%;
         }

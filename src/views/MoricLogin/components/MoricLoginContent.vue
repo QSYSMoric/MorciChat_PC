@@ -1,66 +1,85 @@
 <template>
   <div class="MoricLoginContent">
-        <div class="background_top">
-            <span class="top_icon">
-                
+    <div class="background_top">
+        <span class="top_icon">
+            
+        </span>
+        <span class="top_titile">
+            首页
+        </span>
+    </div>
+    <h2>Moric</h2>
+    <form>  
+        <div class="inputMsg">
+            <span>
+                
             </span>
-            <span class="top_titile">
-                首页
+            <input 
+            v-focus="'active'"
+            type="text" 
+            placeholder="Id">
+        </div>
+        <div class="inputMsg">
+            <span>
+                
             </span>
+            <input 
+            v-focus="'active'"
+            type="password" 
+            title="password"
+            autocomplete="off"
+            placeholder="PAS">
         </div>
-        <h2>欢迎</h2>
-        <form>  
-            <div class="inputMsg active">
-                <span>
-                    
-                </span>
-                <input 
-                type="text" 
-                placeholder="Id">
+        <div class="loginCheckBox">
+            <label class="checkbox-container">
+                <input type="checkbox">
+                <span class="checkmark"></span>隐私通知
+            </label>
+        </div>
+        <div class="loginSubmit">
+            <a @click.stop>登录</a>
+        </div>
+    </form>
+    <div class="loginOther">
+        <p>其他登录方式?</p>
+        <div class="loginOtherContent">
+            <div class="loginOtherContentTop">
+                <ul>
+                    <li style="color: #167efd;"></li>
+                    <li style="color: #d52c2b;"></li>
+                    <li style="color: #28a8ea;"></li>
+                </ul>                    
             </div>
-            <div class="inputMsg">
-                <span>
-                    
-                </span>
-                <input 
-                type="text" 
-                placeholder="PAS">
-            </div>
-            <div class="loginCheckBox">
-                <label class="checkbox-container">
-                    <input type="checkbox">
-                    <span class="checkmark"></span>隐私通知
-                </label>
-            </div>
-            <div class="loginSubmit">
-                <a @click.stop>登录</a>
-            </div>
-        </form>
-        <div class="loginOther">
-            <p>其他登录方式?</p>
-            <div class="loginOtherContent">
-                <div class="loginOtherContentTop">
-                    <ul>
-                        <li style="color: #167efd;"></li>
-                        <li style="color: #d52c2b;"></li>
-                        <li style="color: #28a8ea;"></li>
-                    </ul>                    
-                </div>
-                <div class="loginOtherContentBottom">
-                    <p>还没有账号?<a @click.stop="registerOnclick">去注册</a></p>
-                </div>
+            <div class="loginOtherContentBottom">
+                <p>还没有账号?<a @click.stop="registerOnclick">去注册</a></p>
             </div>
         </div>
+    </div>
   </div>
 </template>
 
-<script>
-export default {
-    name:"MoricLoginContent",
-    setup(){
-
+<script setup>
+    import { useRouter } from 'vue-router';
+    //自定义样式指令
+    const vFocus = {
+        mounted: (el,binding)=>{
+            const inputParentNode = el.parentNode;
+            el.addEventListener('focus',()=>{
+                inputParentNode.classList.add(binding.value);
+            });
+            el.addEventListener('blur',()=>{
+                inputParentNode.classList.remove(binding.value);
+            });
+        }
+    };
+    const router = useRouter();
+    //注册跳转
+    const registerOnclick = function(){
+        router.replace({
+            path:"/Login/OperateRegister",
+            name:"OperateRegister"
+        })
     }
-}
 </script>
 
 <style scoped>
@@ -75,12 +94,16 @@ export default {
         backdrop-filter:blur(10px);
         display: grid;
         grid-template-rows: max-content max-content 1fr;
+        transition: all .3s ease-in-out;
     }
     .MoricLoginContent h2{
         width: 100%;
         text-align: center;
-        font-size: 2rem;
+        font-size: 2em;
+        font-family: 'Luckiest';
         font-weight: 500;
+        letter-spacing: 3px;
+        color: #052630;
     }
     .background_top{
         width: 100%;
@@ -306,6 +329,7 @@ export default {
             width: 100%;
             height: 100%;
             display: flex;
+            font-size: 21pt;
             justify-content: center;
             align-content: center;
         }
@@ -313,6 +337,7 @@ export default {
             height: 5em;
         }
         .background_top{
+            transition: all .3s ease-in-out;
             display: flex;
             font-size: 14pt;
             font-weight: 600;

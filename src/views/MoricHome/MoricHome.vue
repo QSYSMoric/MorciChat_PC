@@ -1,26 +1,29 @@
 <template>
-  <div class="MoricHome">
-      <div class="MoricHome_homeContent">
-        <MoricHomeHamburgButton/>
-        <transition name="fade">
-          <div 
-          class="MoricHome_homeMask" 
-          v-show="maskLayerDisplay">
-            <h1 class="homeMaskFont homeMaskTitle">
-              MORIC CHAT
-            </h1>
-            <p class="homeMaskFont homeMaskMsg">
-              基于Vue、Node、Mysql的在线聊天室
-            </p>
-            <button class="homeMaskFont homeMaskSing" @click="go">
-              click
-            </button>
+  <Transition 
+  leave-active-class="animate__animated animate__fadeOutUp">
+    <div class="MoricHome">
+        <div class="MoricHome_homeContent">
+          <MoricHomeHamburgButton/>
+          <transition name="fade">
+            <div 
+            class="MoricHome_homeMask" 
+            v-show="maskLayerDisplay">
+              <h1 class="homeMaskFont homeMaskTitle">
+                MORIC CHAT
+              </h1>
+              <p class="homeMaskFont homeMaskMsg">
+                基于Vue、Node、Mysql的在线聊天室
+              </p>
+              <button class="homeMaskFont homeMaskSing" @click="go">
+                click
+              </button>
+            </div>
+          </transition>
+          <div class="MoricHome_login" v-if="!maskLayerDisplay">
           </div>
-        </transition>
-        <div class="MoricHome_login" v-if="!maskLayerDisplay">
         </div>
-      </div>
-  </div>
+    </div>
+  </Transition>
 </template>
 
 <script>
