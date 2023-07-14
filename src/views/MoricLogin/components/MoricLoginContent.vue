@@ -1,5 +1,13 @@
 <template>
   <div class="MoricLoginContent">
+        <div class="background_top">
+            <span class="top_icon">
+                
+            </span>
+            <span class="top_titile">
+                首页
+            </span>
+        </div>
         <h2>欢迎</h2>
         <form>  
             <div class="inputMsg active">
@@ -28,6 +36,21 @@
                 <a @click.stop>登录</a>
             </div>
         </form>
+        <div class="loginOther">
+            <p>其他登录方式?</p>
+            <div class="loginOtherContent">
+                <div class="loginOtherContentTop">
+                    <ul>
+                        <li style="color: #167efd;"></li>
+                        <li style="color: #d52c2b;"></li>
+                        <li style="color: #28a8ea;"></li>
+                    </ul>                    
+                </div>
+                <div class="loginOtherContentBottom">
+                    <p>还没有账号?<a @click.stop="registerOnclick">去注册</a></p>
+                </div>
+            </div>
+        </div>
   </div>
 </template>
 
@@ -43,6 +66,7 @@ export default {
 <style scoped>
     .MoricLoginContent{
         width: 65%;
+        min-width: 400px;
         /* height: 70%; */
         box-shadow: 2px 2px 15px rgb(230, 229, 235);
         padding: 30px;
@@ -50,13 +74,28 @@ export default {
         background: #ffff;
         backdrop-filter:blur(10px);
         display: grid;
-        grid-template-rows: 2em max-content 1fr 1fr;
+        grid-template-rows: max-content max-content 1fr;
     }
     .MoricLoginContent h2{
         width: 100%;
         text-align: center;
         font-size: 2rem;
         font-weight: 500;
+    }
+    .background_top{
+        width: 100%;
+        padding: 20px 0;
+        display: none;
+        align-items: center;
+    }
+    .top_icon{
+        color: #157efb;
+        font-size: 1em;
+        cursor: pointer;
+    }
+    .top_titile{
+        margin-left: .6em;
+        font-size: 1em;
     }
     .MoricLoginContent form{
         width: 100%;
@@ -197,6 +236,65 @@ export default {
         transform:scaleX(1.4) scaleY(1.6);
         opacity: 0;
     }
+    .loginOther{
+        margin-top: 20px;
+        width: 100%;
+        min-height: 100pt;
+        border-radius: 15px;
+        padding: 10px 20px 0 20px;
+    }
+    .loginOther p{
+        display: flex;
+        width: 100%;
+        height: 20pt;
+        font-size: 10pt;
+    }
+    .loginOtherContent{
+        width: 100%;
+        min-height: 60pt;
+    }
+    .loginOtherContentTop{
+        display: flex;
+        justify-content: center;
+        height: 35pt;
+        width: 100%;
+    }
+    .loginOtherContentTop ul{
+        width: 60%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .loginOtherContentTop ul li{
+        margin-top: .8em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 32pt;
+        height: 32pt;
+        font-size: 16pt;
+        background: #f0eff4;
+        /* box-shadow: 0 0 2px #f0eff4; */
+        border-radius: 12px;
+    }
+    .loginOtherContentBottom{
+        cursor: pointer;
+        margin-top: 2em;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        width: 100%;
+        height: 20pt;
+    }
+    .loginOtherContentBottom p{
+        display: flex;
+        width: max-content;
+        align-items: center;
+    }
+    .loginOtherContentBottom a{
+        text-decoration: none;
+        color: #167efd;
+    }
     @media(max-width:767px){
         .MoricLoginContent{
             width: 100%;
@@ -213,6 +311,11 @@ export default {
         }
         .inputMsg{
             height: 5em;
+        }
+        .background_top{
+            display: flex;
+            font-size: 14pt;
+            font-weight: 600;
         }
     }
 </style>
