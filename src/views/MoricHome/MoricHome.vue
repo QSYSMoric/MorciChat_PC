@@ -1,53 +1,63 @@
 <template>
   <div class="MoricHome">
       <div class="MoricHome_homeContent">
+        <MoricHomeHamburgButton/>
         <transition name="fade">
           <div 
           class="MoricHome_homeMask" 
-          :class="maskClass"
-          v-if="maskLayerDisplay">
+          v-show="maskLayerDisplay">
             <h1 class="homeMaskFont homeMaskTitle">
               MORIC CHAT
             </h1>
             <p class="homeMaskFont homeMaskMsg">
               基于Vue、Node、Mysql的在线聊天室
             </p>
-            <button class="homeMaskFont homeMaskSing" @click="hideMaskLayer">
+            <button class="homeMaskFont homeMaskSing" @click="go">
               click
             </button>
           </div>
         </transition>
-        <div class="MoricHome_login">
+        <div class="MoricHome_login" v-if="!maskLayerDisplay">
         </div>
       </div>
   </div>
 </template>
 
 <script>
-import { reactive, ref } from 'vue'
+import { reactive, ref } from 'vue';
+import Pubsub from 'pubsub-js'
+import { useRouter } from 'vue-router';
+import MoricHomeHamburgButton from '@/views/MoricHome/components/MoricHomeHamburgButton';
 export default {
     name:"MoricHome",
     setup(){
       const maskLayerDisplay = ref(true);
-      const maskClass = reactive({
-        MoricHome_homeMask_Hiden:false
-      });
-
+      const router = useRouter();
       function hideMaskLayer(){
-        maskClass.MoricHome_homeMask_Hiden = true;
-        maskLayerDisplay.value = false;
+        maskLayerDisplay.value = !maskLayerDisplay.value;
+      }
+      Pubsub.subscribe("Scale",hideMaskLayer);
+
+      function go(){
+        router.push({
+          path:"/Login/Operatelogin",
+          name:"Operatelogin"
+        });
       }
 
       return {
         maskLayerDisplay,
-        maskClass,
-        hideMaskLayer
+        hideMaskLayer,
+        go
       }
+    },
+    components:{
+      MoricHomeHamburgButton,
     }
 }
 </script>
 
-<style>
+<style lang="scss">
   .MoricHome{
     width: 100%;
     height: 100vh;
@@ -58,16 +68,19 @@ export default {
   }
   .MoricHome_homeContent{
     position: relative;
-    width: 80%;
-    height: 80%;
+    width: 95%;
+    height: 95%;
     border-radius: 12px;
+    /* background: #c8c7cd; */
   }
   @media(max-width:767px){
-    .homeContent{
+    .MoricHome_homeContent{
       width: 100%;
       height: 100%;
+      border-radius: 0;
     }
   }
+
   .MoricHome_homeMask{
     position:absolute;
     width: 100%;
@@ -85,13 +98,16 @@ export default {
     background-size: cover;
     background-position: center;
     box-shadow: 0 0 10px #c8c7cd;
-    clip-path: polygon(0 0,100% 0,100% 90%,0 100%);
+    clip-path: polygon(0 0,100% 0,100% 85%,0 100%);
     border-radius: 12px;
     transition: all .5s;
   }
-  .MoricHome_homeMask_Hiden{
-    /* width: 0;
-    height: 0; */
+  @media(max-width:767px){
+    .MoricHome_homeMask{
+      padding: 24px;
+      clip-path: none;
+      border-radius: 0;
+    }
   }
   .homeMaskFont{
     font-family: 'Luckiest';
@@ -190,21 +206,21 @@ export default {
   }
   .fade-enter-active,
   .fade-leave-active {
-    transition: all .5s;
+    transition: all .5s ease-out;
   }
-  .fade-enter{
+  /* 进入的终点，离开的起点 */
+  .fade-enter-to,.fade-leave{
+    transform: scale(1);
     opacity: 1;
   }
-  .fade-leave-to {
-    overflow: hidden;
-    transform-origin: center center;
+  /* 离开的终点，进入的起点 */
+  .fade-leave-to,.fade-enter{
+    transform-origin:right top;
     transform: scale(0);
-    /* display: none; */
     opacity: 0;
   }
-  /* .MoricHome_login{
+  .MoricHome_login{
     width: 50%;
     height: 100%;
-    background: #c8c7cd;
-  } */
+  }
 </style>

@@ -10,14 +10,15 @@ export default {
 
 <style>
   html {
-      overflow-y: scroll;
-      box-sizing: border-box;
-      --background:#052630;
-      --color:#f2efe5;
+    overflow-y: scroll;
+    box-sizing: border-box;
+    --background:#052630;
+    --color:#f2efe5;
   }
   *,
   ::before,
   ::after {
+      font-family: 'icomoon';
       box-sizing: inherit;
   }
   :root{
