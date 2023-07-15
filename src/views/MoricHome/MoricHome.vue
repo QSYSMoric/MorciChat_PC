@@ -26,37 +26,31 @@
   </Transition>
 </template>
 
-<script>
+<script setup>
 import { reactive, ref } from 'vue';
 import Pubsub from 'pubsub-js'
 import { useRouter } from 'vue-router';
+import Loading from '@/utils/loading';
+import { onMounted } from 'vue';
 import MoricHomeHamburgButton from '@/views/MoricHome/components/MoricHomeHamburgButton';
-export default {
-    name:"MoricHome",
-    setup(){
-      const maskLayerDisplay = ref(true);
-      const router = useRouter();
-      function hideMaskLayer(){
-        maskLayerDisplay.value = !maskLayerDisplay.value;
-      }
-      Pubsub.subscribe("Scale",hideMaskLayer);
+const maskLayerDisplay = ref(true);
+const router = useRouter();
+function hideMaskLayer(){
+  maskLayerDisplay.value = !maskLayerDisplay.value;
+}
+Pubsub.subscribe("Scale",hideMaskLayer);
+onMounted(()=>{
+  setTimeout(() => {
+            Loading.unLoading();
+        }, 1200);
+});
+Loading.showLoading();
 
-      function go(){
-        router.push({
-          path:"/Login/Operatelogin",
-          name:"Operatelogin"
-        });
-      }
-
-      return {
-        maskLayerDisplay,
-        hideMaskLayer,
-        go
-      }
-    },
-    components:{
-      MoricHomeHamburgButton,
-    }
+function go(){
+  router.push({
+    path:"/Login/Operatelogin",
+    name:"Operatelogin"
+  });
 }
 </script>
 

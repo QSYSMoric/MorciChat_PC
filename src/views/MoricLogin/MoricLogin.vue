@@ -37,7 +37,15 @@
 </template>
 
 <script setup>
-    import MoricHomeAnimation from './components/MoricHomeAnimation.vue'
+    import MoricHomeAnimation from './components/MoricHomeAnimation.vue';
+    import Loading from '@/utils/loading';
+    import { onMounted } from 'vue';
+    onMounted(()=>{
+        setTimeout(() => {
+            Loading.unLoading();
+        }, 1200);
+    });
+    Loading.showLoading();
 </script>
 
 <style>

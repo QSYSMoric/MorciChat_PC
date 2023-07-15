@@ -39,7 +39,7 @@ export default {
   }
   img {
       vertical-align: top;
-  border: 0;
+      border: 0;
   }
   ol,ul {
       list-style: none;
@@ -60,10 +60,6 @@ export default {
     font-family: "IOS";
     src:url("@/assets/fonts/ios.ttf") format('truetype');
   }
-  #app{
-    width: 100%;
-    height: 100vh;
-  }  
   button{
     outline: none;
     border:none;

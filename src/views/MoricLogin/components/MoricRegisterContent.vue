@@ -148,7 +148,7 @@
           backdrop-filter:blur(10px);
           display: grid;
           grid-template-rows: max-content max-content 1fr;
-          transition: all .3s ease-in-out;
+          transition: all .1s linear;
     }
     .MoricLoginContent h2{
           width: 100%;
@@ -447,4 +447,4 @@
             font-weight: 600;
         }
     }
-</style>../scripts/registerChecker../scripts/InputDetection
+</style>
