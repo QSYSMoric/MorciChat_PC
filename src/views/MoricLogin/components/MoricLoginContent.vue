@@ -51,7 +51,7 @@
                 </ul>                    
             </div>
             <div class="loginOtherContentBottom">
-                <p>还没有账号?<a @click.stop="registerOnclick">去注册</a></p>
+                <p>还没有账号?<a class="hoverClass" @click.stop="registerOnclick">去注册</a></p>
             </div>
         </div>
     </div>
@@ -289,8 +289,10 @@
         align-items: center;
     }
     .loginOtherContentTop ul li{
+        cursor: pointer;
         margin-top: .8em;
         display: flex;
+        transition: all .2s;
         justify-content: center;
         align-items: center;
         width: 32pt;
@@ -299,6 +301,9 @@
         background: #f0eff4;
         /* box-shadow: 0 0 2px #f0eff4; */
         border-radius: 12px;
+    }
+    .loginOtherContentTop ul li:hover{
+        transform: scale(1.5);
     }
     .loginOtherContentBottom{
         cursor: pointer;
@@ -316,7 +321,18 @@
     }
     .loginOtherContentBottom a{
         text-decoration: none;
+        /* background-color: #ffff; */
+        transition: all .2s;
         color: #167efd;
+        position: relative;
+    }
+    .hoverClass:hover,.hoverClass:active{
+        margin-left: 1em;
+        color: #53d86a;
+        font-weight: 600;
+        transform: rotate(5deg) scale(1.6);
+        padding: 2px 5px;
+        /* box-shadow: 0 3px 2px rgba(0, 0, 0,.4); */
     }
     @media(max-width:767px){
         .MoricLoginContent{

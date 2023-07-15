@@ -18,7 +18,7 @@
                         Explore our own value and cultivate our hobbies
                     </p>
                     <div class="background_img">
-                        
+                        <MoricHomeAnimation></MoricHomeAnimation>
                     </div>
                 </div>
             </div>
@@ -36,10 +36,8 @@
     </div>
 </template>
 
-<script>
-export default {
-    name:"MoricLogin",
-}
+<script setup>
+    import MoricHomeAnimation from './components/MoricHomeAnimation.vue'
 </script>
 
 <style>
@@ -53,7 +51,7 @@ export default {
     .login_background{
         width: 100%;
         height: 100%;
-        padding: 30pt;
+        padding: 30pt 30pt 40pt 30pt;
     }
     .login_background_content{
         width: 100%;
@@ -105,7 +103,8 @@ export default {
         text-indent: 2em;
     }
     .background_img {
-        margin-top: 5em;
+        width: 100%;
+        height: 80%;
     }
     .MoricLoginOperate{
         width: 100%;

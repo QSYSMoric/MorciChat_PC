@@ -69,4 +69,8 @@ export default {
     border:none;
     cursor:pointer;
   }
+  .animate__animated{
+      animation-direction: .4s;
+      /* animation-timing-function:ease-in; */
+  }
 </style>
