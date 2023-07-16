@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import '@/assets/styles/err.css';
 export default {
   name: 'App',
 }

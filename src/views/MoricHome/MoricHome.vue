@@ -3,7 +3,7 @@
   leave-active-class="animate__animated animate__fadeOutUp">
     <div class="MoricHome">
         <div class="MoricHome_homeContent">
-          <MoricHomeHamburgButton/>
+          <MoricHomeHamburgButton :clickFn="hideMaskLayer"/>
           <transition name="fade">
             <div 
             class="MoricHome_homeMask" 
@@ -27,31 +27,29 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
-import Pubsub from 'pubsub-js'
-import { useRouter } from 'vue-router';
-import Loading from '@/utils/loading';
-import { onMounted } from 'vue';
-import MoricHomeHamburgButton from '@/views/MoricHome/components/MoricHomeHamburgButton';
-const maskLayerDisplay = ref(true);
-const router = useRouter();
-function hideMaskLayer(){
-  maskLayerDisplay.value = !maskLayerDisplay.value;
-}
-Pubsub.subscribe("Scale",hideMaskLayer);
-onMounted(()=>{
-  setTimeout(() => {
-            Loading.unLoading();
-        }, 1200);
-});
-Loading.showLoading();
-
-function go(){
-  router.push({
-    path:"/Login/Operatelogin",
-    name:"Operatelogin"
+  import { ref } from 'vue';
+  import { useRouter } from 'vue-router';
+  import Loading from '@/utils/loading';
+  import { onMounted } from 'vue';
+  import MoricHomeHamburgButton from '@/views/MoricHome/components/MoricHomeHamburgButton';
+  const maskLayerDisplay = ref(true);
+  const router = useRouter();
+  function hideMaskLayer(){
+    maskLayerDisplay.value = !maskLayerDisplay.value;
+  }
+  onMounted(()=>{
+    setTimeout(() => {
+              Loading.unLoading();
+          }, 1200);
   });
-}
+  Loading.showLoading();
+
+  function go(){
+    router.push({
+      path:"/Login/Operatelogin",
+      name:"Operatelogin"
+    });
+  }
 </script>
 
 <style lang="scss">

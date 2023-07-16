@@ -10,16 +10,18 @@
     </div>
     <h2>Moric</h2>
     <form>  
-        <div class="inputMsg">
+        <div class="animate__animated inputMsg" :class="userId.class">
             <span>
                 
             </span>
             <input 
             v-focus="'active'"
             type="text" 
+            v-model="userId.data"
+            @focus="userId.offErr()"
             placeholder="Id">
         </div>
-        <div class="inputMsg">
+        <div class="animate__animated inputMsg" :class="password.class">
             <span>
                 
             </span>
@@ -28,6 +30,8 @@
             type="password" 
             title="password"
             autocomplete="off"
+            v-model="password.data"
+            @focus="password.offErr()"
             placeholder="PAS">
         </div>
         <div class="loginCheckBox">
@@ -37,7 +41,7 @@
             </label>
         </div>
         <div class="loginSubmit">
-            <a @click.stop>登录</a>
+            <a @click.stop="loginSubmit">登录</a>
         </div>
     </form>
     <div class="loginOther">
@@ -60,6 +64,9 @@
 
 <script setup>
     import { useRouter } from 'vue-router';
+    import InputField from '@/views/MoricLogin/scripts/InputField';
+    import { reactive } from 'vue';
+    import loginChecker from '../scripts/InputDetection';
     //自定义样式指令
     const vFocus = {
         mounted: (el,binding)=>{
@@ -72,6 +79,8 @@
             });
         }
     };
+    const userId = reactive(new InputField());
+    const password = reactive(new InputField());
     const router = useRouter();
     //注册跳转
     const registerOnclick = function(){
@@ -79,6 +88,28 @@
             path:"/Login/OperateRegister",
             name:"OperateRegister"
         })
+    }
+    //登录按钮
+    const loginSubmit = function(){
+        let error = null;
+        //检测输入信息
+        //设置要执行的策略
+        loginChecker.setStrategy("validUserIdStrategy");
+        error = loginChecker.check(userId.data);
+        if(!error){
+            userId.onErr();
+            return;
+        }
+        loginChecker.setStrategy("validPasswordStrategy");
+        error = loginChecker.check(password.data);
+        if(!error){
+            password.onErr();
+            return;
+        }
+        router.push({
+            path:"/Page",
+            name:"Page"
+        });
     }
 </script>
 
@@ -135,6 +166,19 @@
         color: #8f8e94;
         border-bottom: 3px solid #8f8e94;
     }
+    .inputMsg::before{
+        content: " 输入错误";
+        font-size: .6em;
+        font-weight: 400;
+        top: -16px;
+        right: 0;
+        position: absolute;
+        color: #fc3d38;
+        border-left: solid 5px #fc3d38;
+        padding: 5px 10px;
+        z-index: 10;
+        display: none;
+    }
     .inputMsg span{
         display: flex;
         font-size: 1em;
@@ -174,6 +218,22 @@
     }
     .active input::placeholder{
         color: rgb(21, 126, 251);
+    }
+    .err{
+        border-bottom: 3px solid #fc3d38;
+    }
+    .err span{
+        color: #fc3d38;
+        border-right: solid 2px #fc3d38;
+    }
+    .err input{
+        color: #fc3d38;
+    }
+    .err input::placeholder{
+        color: #fc3d38;
+    }
+    .err::before{
+        display: block;
     }
     .loginCheckBox{
         margin-top: 1em;

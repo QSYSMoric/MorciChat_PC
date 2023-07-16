@@ -1,0 +1,16 @@
+.err{
+    border-bottom: 3px solid #fc3d38;
+}
+.err span{
+    color: #fc3d38;
+    border-right: solid 2px #fc3d38;
+}
+.err input{
+    color: #fc3d38;
+}
+.err input::placeholder{
+    color: #fc3d38;
+}
+.err::before{
+    display: block;
+}

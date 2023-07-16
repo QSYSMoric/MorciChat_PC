@@ -7,26 +7,24 @@
 </template>
 
 <script>
-import Pubsub from 'pubsub-js'
 import { reactive } from 'vue';
 export default {
     name:"MoricHomeHamburgButton",
-    setup(){
-        const clickEdClass = reactive({
-            clickedButton:false,
-            buttonHover:true,
-        });
-
-       function hamburgButtonFn(){
-            clickEdClass.clickedButton = !clickEdClass.clickedButton;
-            clickEdClass.buttonHover = !clickEdClass.buttonHover;
-            Pubsub.publish("Scale");
-       };
-
-       return{
-            clickEdClass,
-            hamburgButtonFn
-       }
+    props:['clickFn'],
+    setup(props){
+      const clickEdClass = reactive({
+          clickedButton:false,
+          buttonHover:true,
+      });
+      function hamburgButtonFn(){
+          clickEdClass.clickedButton = !clickEdClass.clickedButton;
+          clickEdClass.buttonHover = !clickEdClass.buttonHover;
+          props.clickFn();
+      };
+      return{
+          clickEdClass,
+          hamburgButtonFn
+      }
     }
 }
 </script>

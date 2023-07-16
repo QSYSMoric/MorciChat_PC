@@ -8,13 +8,21 @@ export default {
     // 策略对象 - 检查密码是否大于等于 6 位数
     "validPasswordStrategy":{
       isValid(value) {
-        return value.length >= 6;
+        return value.length >= 0;
       }
     },
     // 策略对象 - 检查邮箱格式是否正确
     "validEmailStrategy":{
       isValid(value) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(value);
+      }
+    },
+    // 策略对象 - 检查用户名格式是否正确
+    "validUserIdStrategy":{
+      isValid(value) {
+        const emailRegex = /^\d{5,}$/;
+        console.log(value);
         return emailRegex.test(value);
       }
     },
