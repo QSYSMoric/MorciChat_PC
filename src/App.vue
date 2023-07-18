@@ -19,7 +19,7 @@ export default {
   *,
   ::before,
   ::after {
-      font-family: 'icomoon';
+      font-family: 'icomoon','IOS';
       box-sizing: inherit;
   }
   :root{
@@ -69,5 +69,20 @@ export default {
   .animate__animated{
       animation-direction: .4s;
       /* animation-timing-function:ease-in; */
+  }
+  *::-webkit-scrollbar{
+            background-color: transparent;
+            width: 12px;
+  }
+  *::-webkit-scrollbar-thumb{
+      background-color: inherit;
+      border-radius: 8px;
+      background-clip: content-box;
+      border: 2px solid transparent;
+  }
+  body[scroll],
+  *::-webkit-scrollbar-thumb:hover{
+      background-color: rgba(0,0,0,.5);
+      transition: 0s;
   }
 </style>

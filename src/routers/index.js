@@ -1,5 +1,7 @@
 import { createRouter,createWebHashHistory } from "vue-router";
+import PubSub from "pubsub-js";
 import MoricLoginContentRoutes from "@/views/MoricLogin/routers";
+import MoricPageContentRoutes from "@/views/MoricPage/routers/router";
 import Loading from '@/utils/loading';
 
 const routes = [
@@ -19,6 +21,7 @@ const routes = [
         path:"/Page",
         name:"Page",
         component:()=>import('@/views/MoricPage/MoricPage.vue'),
+        children:MoricPageContentRoutes,
     }
 ]
 

@@ -107,8 +107,8 @@
             return;
         }
         router.push({
-            path:"/Page",
-            name:"Page"
+            path:"/Page/communityBar",
+            name:"communityBar"
         });
     }
 </script>
@@ -311,7 +311,8 @@
     .loginSubmit a:hover{
         transform: translateY(-3px);
         box-shadow: 0 10px 10px rgba(0, 0, 0,.2);
-    }.loginSubmit a:active{
+    }
+    .loginSubmit a:active{
         transform: translateY(-1px);
         box-shadow: 0 5px 5px rgba(0, 0, 0,.2);
     }
