@@ -43,7 +43,7 @@ export default {
     height: 2em;
     border-radius: 50%;
     background: #ffff;
-    z-index: 2;  
+    z-index: 11;  
     box-shadow: 2px 2px 5px rgba(5, 38, 48,.4);
     cursor: pointer;
   }

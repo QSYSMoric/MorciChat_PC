@@ -1,13 +1,17 @@
 <template>
   <div>
-    <headPublishingArea/>
+    <HeadPublishingArea/>
+  </div>
+  <div>
+    <ShowMomentsArea/>
   </div>
 </template>
 
 <script setup>
   import { onBeforeRouteLeave,useRoute } from 'vue-router';
   import PubSub from 'pubsub-js';
-  import headPublishingArea from '@/views/MoricPage/module/communityBar/components/headPublishingArea'
+  import HeadPublishingArea from './components/HeadPublishingArea.vue';
+  import ShowMomentsArea from './components/ShowMomentsArea.vue';
   const route = useRoute();
   PubSub.publish(`${route.name}on`);
   onBeforeRouteLeave((to,from)=>{

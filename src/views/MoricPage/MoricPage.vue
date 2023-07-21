@@ -101,10 +101,9 @@
 
 <style scoped>
     .page{
-        display: flex;
         align-items: center;
         width: 100%;
-        min-height: 100vh;
+        height: 100vh;
         padding: 30px;
         display: grid;
         grid-template-columns: max-content 1fr 20%;
@@ -114,24 +113,30 @@
         width: 3rem;
         height: 100%;
         display: flex;
+        position: relative;
         padding: .1em 0 .1em 10px;
         flex-direction: column;
         justify-content: space-between;
         transition:all 0.5s linear;
         overflow: hidden;
-        background: #ffff;
+        background-color: #ffff;
         border-radius: 15px;
+        z-index: 1001;
     }
     @media(max-width:767px){
         .sideBar{
             width: 90pt;
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             height: 100%;
             border-radius:0 15px 15px 0;
             width: 0;
             padding: 30px 0;
+            z-index: 1001;
+        }
+        .page{
+            grid-template-columns: 1fr;
         }
     }
     .logo,.toolBar>div{
@@ -153,6 +158,7 @@
         height: max-content;
         padding: 8px;
         font-size: 1em;
+        border-radius: 50%;
     }
     .title{
         display: flex;
@@ -307,9 +313,9 @@
     .operationArea{
         width: 100%;
         height: 100%;
+        overflow: auto;
         border-radius: 15px;
         padding: 0 24px;
-        overflow: auto;
     }
     .operationArea h1{
         font-size: 2em;

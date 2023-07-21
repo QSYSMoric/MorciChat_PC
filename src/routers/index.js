@@ -23,7 +23,7 @@ const routes = [
         component:()=>import('@/views/MoricPage/MoricPage.vue'),
         children:MoricPageContentRoutes,
     }
-]
+];
 
 const router = createRouter({
     routes,

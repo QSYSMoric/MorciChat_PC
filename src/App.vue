@@ -71,11 +71,11 @@ export default {
       /* animation-timing-function:ease-in; */
   }
   *::-webkit-scrollbar{
-            background-color: transparent;
-            width: 12px;
+      background-color: transparent;
+      width: 12px;
   }
   *::-webkit-scrollbar-thumb{
-      background-color: inherit;
+      background-color: #d2d1d7;
       border-radius: 8px;
       background-clip: content-box;
       border: 2px solid transparent;
@@ -84,5 +84,15 @@ export default {
   *::-webkit-scrollbar-thumb:hover{
       background-color: rgba(0,0,0,.5);
       transition: 0s;
+  }
+  img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  @media(max-width:767px){
+    *::-webkit-scrollbar-thumb{
+      background-color:transparent;
+    }
   }
 </style>
