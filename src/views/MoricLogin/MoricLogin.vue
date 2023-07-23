@@ -43,7 +43,7 @@
     onMounted(()=>{
         setTimeout(() => {
             Loading.unLoading();
-        }, 5000);
+        }, 500);
     });
     Loading.showLoading();
 </script>

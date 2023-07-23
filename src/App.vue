@@ -6,6 +6,9 @@
 import '@/assets/styles/err.css';
 export default {
   name: 'App',
+  setup(){
+    
+  }
 }
 </script>
 

@@ -43,7 +43,6 @@
           }, 1200);
   });
   Loading.showLoading();
-
   function go(){
     router.push({
       path:"/Login/Operatelogin",

@@ -67,6 +67,7 @@
     import InputField from '@/views/MoricLogin/scripts/InputField';
     import { reactive } from 'vue';
     import loginChecker from '../scripts/InputDetection';
+    import Prompt from '@/components/GlobalPrompt/index';
     //自定义样式指令
     const vFocus = {
         mounted: (el,binding)=>{
@@ -106,10 +107,14 @@
             password.onErr();
             return;
         }
-        router.push({
-            path:"/Page/communityBar",
-            name:"communityBar"
-        });
+        Prompt("登录成功",true);
+        const routeTime = setTimeout(() => {
+            router.push({
+                path:"/Page/communityBar",
+                name:"communityBar"
+            });
+            clearTimeout(routeTime);
+        }, 700);
     }
 </script>
 
@@ -280,6 +285,7 @@
         border-radius: 12px;  
         cursor: pointer;
         margin-top: 1em;
+        user-select: none;
     }
     .loginSubmit a{
         position: relative;

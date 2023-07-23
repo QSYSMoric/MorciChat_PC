@@ -64,7 +64,8 @@
             </label>
         </div>
         <div class="loginSubmit">
-            <a @click.stop="registerSubmit">注册</a>
+            <a @click.stop="registerSubmit" v-if="isRegisterOnclick">注册</a>
+            <a v-if="!isRegisterOnclick"><div class="buttonLoading"></div></a>
         </div>
         </form>
         <div class="loginOtherContentBottom">
@@ -74,7 +75,7 @@
   </template>
   
 <script setup>
-    import { reactive, ref, watch } from 'vue';
+    import { reactive, ref } from 'vue';
     import { useRouter } from 'vue-router';
     import InputField from '@/views/MoricLogin/scripts/InputField';
     import registerChecker from '../scripts/InputDetection';
@@ -99,6 +100,8 @@
             name:"Operatelogin"
         });
     }
+    //注册按钮是否可以被按
+    const isRegisterOnclick = ref(true);
     //每个input输入框所对应的值
     const userName = reactive(new InputField());
     const email = reactive(new InputField());
@@ -106,6 +109,9 @@
     const avatar = reactive({
         src:null,
     });
+    userName.data = "Moric";
+    email.data = "183957330@qq.com";
+    password.data = "272919";
     //头像处理
     function handleFileUpload(event){
         register.handleFileUpload(event,avatar);
@@ -113,26 +119,37 @@
     //注册按钮
     function registerSubmit(){
         let error = null;
+        isRegisterOnclick.value = false;
         //检测输入信息
         //设置要执行的策略
         registerChecker.setStrategy("emptyUsernameStrategy");
         error = registerChecker.check(userName.data);
         if(!error){
             userName.onErr();
+            isRegisterOnclick.value = true;
             return;
         }
         registerChecker.setStrategy("validEmailStrategy");
         error = registerChecker.check(email.data);
         if(!error){
             email.onErr();
+            isRegisterOnclick.value = true;
             return;
         }
         registerChecker.setStrategy("validPasswordStrategy");
         error = registerChecker.check(password.data);
         if(!error){
             password.onErr();
+            isRegisterOnclick.value = true;
             return;
         }
+        register.setUserMsg({
+            userName:userName.data,
+            userPassword:password.data,
+            userEmail:email.data
+        }).then(()=>{
+            register.registrationRequest(router,isRegisterOnclick);
+        });
     }
 </script>
   
@@ -367,6 +384,7 @@
         border-radius: 12px;
         text-align: center;
         line-height: 34pt;
+        user-select: none;
     }
     .loginSubmit a:after{
         content: "";
@@ -445,6 +463,18 @@
             display: flex;
             font-size: 14pt;
             font-weight: 600;
+        }
+    }
+    .buttonLoading{
+        animation: buttonRotate 5s linear infinite;
+    }
+    @keyframes buttonRotate{
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
         }
     }
 </style>
