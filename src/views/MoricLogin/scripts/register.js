@@ -42,23 +42,20 @@ export default {
         }
     },
     //注册请求
-    registrationRequest(router,isRegisterOnclick){
-        axios({
+    async registrationRequest(router,isRegisterOnclick){
+        await axios({
             method:"post",
             url:"/moric/register",
             data:this.userMsg
         }).then((value)=>{
-            isRegisterOnclick.value = true;
-            sessionStorage.setItem("token",value.token);
+            let RegisterOnclick = setTimeout(() => {
+                isRegisterOnclick.value = true;
+                clearTimeout(RegisterOnclick);
+            }, 1000);
+            sessionStorage.setItem("token",value.body.token);
+            console.log(value)
         }).catch(()=>{
             isRegisterOnclick.value = true;
         });
-        // const jumpTime = setTimeout(()=>{
-        //     router.push({
-        //         path:"/Page/communityBar",
-        //         name:"communityBar",
-        //     });
-        //     clearTimeout(jumpTime);
-        // },800);
     }
 }

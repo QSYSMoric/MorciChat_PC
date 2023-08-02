@@ -49,7 +49,8 @@
         border-radius: 2px;
         font-size: 14pt;
         top: 30px;
-        left: 47%;
+        left: 45%;
+        background: #ffff;
         grid-template-columns: 30px 1fr;
         box-shadow: 0px 2px 10px rgba(0,0,0,.2);
         z-index: 99999;

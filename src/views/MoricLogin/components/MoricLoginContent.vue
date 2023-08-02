@@ -19,7 +19,7 @@
             type="text" 
             v-model="userId.data"
             @focus="userId.offErr()"
-            placeholder="Id">
+            placeholder="Id/Email">
         </div>
         <div class="animate__animated inputMsg" :class="password.class">
             <span>
@@ -67,7 +67,7 @@
     import InputField from '@/views/MoricLogin/scripts/InputField';
     import { reactive } from 'vue';
     import loginChecker from '../scripts/InputDetection';
-    import Prompt from '@/components/GlobalPrompt/index';
+    import login from '../scripts/login';
     //自定义样式指令
     const vFocus = {
         mounted: (el,binding)=>{
@@ -83,38 +83,48 @@
     const userId = reactive(new InputField());
     const password = reactive(new InputField());
     const router = useRouter();
-    //注册跳转
+    userId.data = "183957330@qq.com";
+    password.data = "272919";
+    //注册页面跳转
     const registerOnclick = function(){
         router.replace({
             path:"/Login/OperateRegister",
             name:"OperateRegister"
-        })
+        });
     }
     //登录按钮
     const loginSubmit = function(){
         let error = null;
         //检测输入信息
         //设置要执行的策略
-        loginChecker.setStrategy("validUserIdStrategy");
+        loginChecker.setStrategy("emptyUsernameStrategy");
         error = loginChecker.check(userId.data);
         if(!error){
             userId.onErr();
             return;
         }
         loginChecker.setStrategy("validPasswordStrategy");
-        error = loginChecker.check(password.data);
+        error = loginChecker.check(password.data.toString());
         if(!error){
             password.onErr();
             return;
         }
-        Prompt("登录成功",true);
-        const routeTime = setTimeout(() => {
-            router.push({
-                path:"/Page/communityBar",
-                name:"communityBar"
-            });
-            clearTimeout(routeTime);
-        }, 700);
+        //登录请求
+        const loginRequest = login.loginRequest({
+            userId:userId.data,
+            userPassword:password.data,
+        });
+        loginRequest.then(()=>{
+            let loginOnclick = setTimeout(() => {
+                router.push({
+                    path:"/Page/communityBar",
+                    name:"communityBar",
+                });
+                clearTimeout(loginOnclick);
+            }, 1000);
+        },(err)=>{
+            console.log(err);
+        });
     }
 </script>
 
@@ -204,7 +214,7 @@
     }
     .inputMsg input::placeholder{
         font-family: 'Luckiest';
-        letter-spacing: 3px;
+        letter-spacing: 5px;
     }
     .inputMsg input:focus{
         outline: none;

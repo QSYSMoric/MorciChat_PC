@@ -3,6 +3,7 @@ const routes = [
         path:"",
         name:"MoricLoginIndex",
         redirect:{
+            path:"/Login/Operatelogin",
             name:"Operatelogin"
         }
     },
