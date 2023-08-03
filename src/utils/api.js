@@ -27,11 +27,9 @@ api.interceptors.response.use((res)=>{
     //这次的操作是否成功
     if(res.data.state){
         //操作成功的统一处理
-        Prompt(res.data.alertMsg,res.data.state);
         return Promise.resolve(res.data);
     }else{
         //操作失败的统一处理
-        Prompt(res.data.alertMsg,res.data.state);
         // let RegisterOnclick = setTimeout(() => {
         //     router.replace({
         //         path:"/Error",
@@ -43,7 +41,7 @@ api.interceptors.response.use((res)=>{
     };
 },err=>{
     //响应失败的统一处理
-    Prompt(err,false);
+    Prompt("服务器超时,检查一下网络或者等待一下",false,5000);
     return Promise.reject(new Error(err));
 });
 

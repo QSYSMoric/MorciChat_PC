@@ -83,7 +83,7 @@
     const userId = reactive(new InputField());
     const password = reactive(new InputField());
     const router = useRouter();
-    userId.data = "183957330@qq.com";
+    userId.data = "183957332@qq.com";
     password.data = "272919";
     //注册页面跳转
     const registerOnclick = function(){
@@ -115,6 +115,7 @@
             userPassword:password.data,
         });
         loginRequest.then(()=>{
+            //成功后跳转路由
             let loginOnclick = setTimeout(() => {
                 router.push({
                     path:"/Page/communityBar",
@@ -122,8 +123,16 @@
                 });
                 clearTimeout(loginOnclick);
             }, 1000);
-        },(err)=>{
-            console.log(err);
+        },()=>{
+            //失败后跳转err页面
+            console.log("服务器超时");
+            // let loginOnclick = setTimeout(() => {
+            //     router.replace({
+            //         path:"/Error",
+            //         name:"Error",
+            //     });
+            //     clearTimeout(loginOnclick);
+            // }, 1000);
         });
     }
 </script>

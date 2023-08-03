@@ -23,10 +23,11 @@
             <div class="toolBar">
                 <div class="user">
                     <span class="icon">
-                        <img src="../../assets/IMG_6803.jpg" alt="">
+                        <img :src="selfMsg.getProfileURL" v-if="selfMsg.getProfileURL" alt="用户头像">
+                        <img src="../../assets/IMG_6803.jpg" alt="默认头像">
                     </span>
                     <span class="title" :class="{hide:isHided}">
-                        admin
+                        {{selfMsg.selfName}}
                     </span>
                 </div>
                 <div class="black">
@@ -40,7 +41,6 @@
             </router-view>
         </main>
         <footer class="viewsArea">
-
         </footer>
     </div>
     <MoricHomeHamburgButton :clickFn="toggleWidth"></MoricHomeHamburgButton>
@@ -49,14 +49,19 @@
 <script setup>
     import PubSub from 'pubsub-js';
     import MoricHomeHamburgButton from '@/views/MoricHome/components/MoricHomeHamburgButton';
-    import { reactive, ref } from 'vue';
+    import { reactive, ref, onMounted } from 'vue';
+    import Loading from '@/utils/loading';
     import { useRouter } from 'vue-router';
+    import { useSelfStore } from '@/store/selfStore'; 
     import NavigationBarObj from '@/views/MoricPage/scripts/NavigationBarObj';
     //整个导航栏的样式变换
-    const isHided  = ref(true);
+    const isHided = ref(true);
     function toggleWidth(){
         isHided .value = !isHided .value;
     }
+    //toolBar参数
+    const selfMsg = useSelfStore();
+
     //导航栏中的导航对象
     const communityBar = reactive(new NavigationBarObj("社区","","#fc3159",false,{
         path:"/Page/communityBar",
@@ -97,6 +102,13 @@
     function navigation(nav,linkTo){
         router.replace(linkTo);
     }
+    //过渡动画
+    onMounted(()=>{
+        setTimeout(() => {
+            Loading.unLoading();
+        }, 500);
+    });
+    Loading.showLoading();
 </script>
 
 <style scoped>
@@ -150,6 +162,8 @@
         font-weight: 600;
     }
     .icon{
+        width: 100%;
+        height: 100%;
         display: flex;
         justify-content: center;
         align-items: center; 
@@ -325,4 +339,4 @@
         height: 100%;
         /* background: #ffff; */
     }
-</style>
+</style>@/store/selfStore

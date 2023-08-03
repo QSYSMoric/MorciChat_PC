@@ -1,4 +1,6 @@
 import axios from "@/utils/api";
+import Prompt from "@/components/GlobalPrompt";
+
 export default{
     //登录输入信息
     inputMsg:{
@@ -18,10 +20,16 @@ export default{
                 url: "/moric/login",
                 data: obj
             });
-            sessionStorage.setItem("token",response.body.token);
+            const data = response.body;
+            //提示框
+            Prompt(response.alertMsg,response.state);
+            //存储token
+            sessionStorage.setItem("token",data.token);
             return true;
         } catch (err) {
             console.log(err);
+            //提示框
+            Prompt("出错了",false);
             throw err;
         }
     }

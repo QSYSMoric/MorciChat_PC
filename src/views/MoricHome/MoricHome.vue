@@ -12,7 +12,7 @@
                 MORIC CHAT
               </h1>
               <p class="homeMaskFont homeMaskMsg">
-                基于Vue、Node、Mysql的在线聊天室
+                基于Vue、Node、Mysql的个人网站
               </p>
               <button class="homeMaskFont homeMaskSing" @click="go">
                 click
@@ -43,6 +43,7 @@
           }, 1200);
   });
   Loading.showLoading();
+  
   function go(){
     router.push({
       path:"/Login/Operatelogin",

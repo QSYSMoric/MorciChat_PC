@@ -98,4 +98,19 @@ export default {
       background-color:transparent;
     }
   }
+  .imgLoading{
+    background: linear-gradient(110deg,
+    rgba(255,255,255, 0) 40%,
+    rgba(255,255,255,.5) 50%,
+    rgba(255,255,255,0) 60%) #d9d9d9;
+    background-size: 200% 100%;
+    background-position-x: 120%;
+    overflow: hidden;
+    animation: 1s loading ease-in-out infinite;
+  }
+  @keyframes loading{
+    to{
+        background-position-x: -20%;
+    }
+  }
 </style>

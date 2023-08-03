@@ -49,7 +49,7 @@
         border-radius: 2px;
         font-size: 14pt;
         top: 30px;
-        left: 45%;
+        left: 42%;
         background: #ffff;
         grid-template-columns: 30px 1fr;
         box-shadow: 0px 2px 10px rgba(0,0,0,.2);
