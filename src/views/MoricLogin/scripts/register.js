@@ -41,21 +41,23 @@ export default {
             this.userMsg.userProfile = reader.result;
         }
     },
-    //注册请求
-    async registrationRequest(router,isRegisterOnclick){
-        await axios({
-            method:"post",
-            url:"/moric/register",
-            data:this.userMsg
-        }).then((value)=>{
-            let RegisterOnclick = setTimeout(() => {
-                isRegisterOnclick.value = true;
-                clearTimeout(RegisterOnclick);
-            }, 1000);
-            sessionStorage.setItem("token",value.body.token);
-            console.log(value)
-        }).catch(()=>{
-            isRegisterOnclick.value = true;
+    async registrationRequest(isRegisterOnclick) {
+      try {
+        const response = await axios({
+          method: "post",
+          url: "/moric/register",
+          data: this.userMsg
         });
+        let RegisterOnclick = setTimeout(() => {
+          isRegisterOnclick.value = true;
+          clearTimeout(RegisterOnclick);
+        }, 1000);
+        sessionStorage.setItem("token", response.body.token);
+        console.log(response)
+        return Promise.resolve(response);
+      } catch (error) {
+        isRegisterOnclick.value = true;
+        return Promise.reject(error);
+      }
     }
 }

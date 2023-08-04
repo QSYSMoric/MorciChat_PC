@@ -80,6 +80,7 @@
     import InputField from '@/views/MoricLogin/scripts/InputField';
     import registerChecker from '../scripts/InputDetection';
     import register from '../scripts/register';
+    import Prompt from '@/components/GlobalPrompt/index';
     //自定义样式指令
     const vFocus = {
         mounted: (el,binding)=>{
@@ -93,7 +94,7 @@
         }
     };
     const router = useRouter();
-    //注册跳转
+    //登录页面跳转
     const registerOnclick = function(){
         router.push({
             path:"/Login/Operatelogin",
@@ -148,7 +149,22 @@
             userPassword:password.data,
             userEmail:email.data
         }).then(()=>{
-            register.registrationRequest(router,isRegisterOnclick);
+            register.registrationRequest(router,isRegisterOnclick).then((data)=>{
+                //成功后跳转路由
+                Prompt(`${data.alertMsg}，账号：(${data.body.userId})`,data.state,1000,()=>{
+                    router.push({
+                        path:"/Page/communityBar",
+                        name:"communityBar",
+                    });
+                });
+            }).catch((err)=>{
+                isRegisterOnclick.value = true;
+                Prompt(err.alertMsg,false,2000,()=>{
+                    router.replace({
+                        name:"OperateRegister",
+                    });
+                });
+            });
         });
     }
 </script>

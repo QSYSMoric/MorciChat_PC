@@ -1,6 +1,7 @@
 import { createRouter,createWebHashHistory } from "vue-router";
 import MoricLoginContentRoutes from "@/views/MoricLogin/routers";
 import MoricPageContentRoutes from "@/views/MoricPage/routers/router";
+import Prompt from "@/components/GlobalPrompt/index";
 import Loading from '@/utils/loading';
 import cookies from "@/utils/cookies";
 
@@ -13,7 +14,7 @@ const routes = [
     {
         path:"/Login",
         name:"Login",
-        redirect:"/Operatelogin",
+        redirect:"/Login/Operatelogin",
         meta:{
             requiresAuth: false // 不需要验证在线
         },
@@ -47,12 +48,18 @@ const router = createRouter({
 //验证下一个路由是否需要验证用户在线？
 router.beforeEach((to,from,next)=>{
     if(to.meta.requiresAuth){
+        console.log(cookies.getCookie())
         if(cookies.getCookie()){
             return next();
         }
-        next({path:"/Error",});
+        Prompt("请登录",false,1000,()=>{next({
+            path:"/Login",
+            name:"Login",
+        })});
+        return;
+    }else{
+        return next();
     }
-    return next();
 });
 
 router.afterEach(()=>{

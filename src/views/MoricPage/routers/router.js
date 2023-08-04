@@ -4,6 +4,9 @@ const routes = [
         path:"communityBar",
         name:"communityBar",
         component:()=>import('../module/communityBar/community.vue'),
+        meta:{
+            requiresAuth: true // 需要验证在线
+        },
         beforeEnter: (to, from, next) => {
             PubSub.publish(`${to.name}on`);
             next();
@@ -13,6 +16,9 @@ const routes = [
         path:"chatBar",
         name:"chatBar",
         component:()=>import('../module/chatBar/chat.vue'),
+        meta:{
+            requiresAuth: true // 需要验证在线
+        },
         beforeEnter: (to, from, next) => {
             PubSub.publish(`${to.name}on`);
             next();
@@ -22,6 +28,9 @@ const routes = [
         path:"selfBar",
         name:"selfBar",
         component:()=>import('../module/selfBar/self.vue'),
+        meta:{
+            requiresAuth: true // 需要验证在线
+        },
         beforeEnter(to,from,next){
             PubSub.publish(`${to.name}on`);
             next();
@@ -31,6 +40,9 @@ const routes = [
         path:"newFriendBar",
         name:"newFriendBar",
         component:()=>import('../module/newFriendBar/newFriend.vue'),
+        meta:{
+            requiresAuth: true // 需要验证在线
+        },
         beforeEnter(to,from,next){
             PubSub.publish(`${to.name}on`);
             next();
@@ -40,6 +52,9 @@ const routes = [
         path:"aboutBar",
         name:"aboutBar",
         component:()=>import('../module/aboutBar/about.vue'),
+        meta:{
+            requiresAuth: true // 需要验证在线
+        },
         beforeEnter(to,from,next){
             PubSub.publish(`${to.name}on`);
             next();
@@ -49,6 +64,9 @@ const routes = [
         path:"settingBar",
         name:"settingBar",
         component:()=>import('../module/settingBar/setting.vue'),
+        meta:{
+            requiresAuth: true // 需要验证在线
+        },
         beforeEnter(to,from,next){
             PubSub.publish(`${to.name}on`);
             next();

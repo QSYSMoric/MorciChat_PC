@@ -24,7 +24,7 @@
                 <div class="user">
                     <span class="icon">
                         <img :src="selfMsg.getProfileURL" v-if="selfMsg.getProfileURL" alt="用户头像">
-                        <img src="../../assets/IMG_6803.jpg" alt="默认头像">
+                        <img src="../../assets/IMG_6803.jpg" v-else alt="默认头像">
                     </span>
                     <span class="title" :class="{hide:isHided}">
                         {{selfMsg.selfName}}
@@ -50,18 +50,17 @@
     import PubSub from 'pubsub-js';
     import MoricHomeHamburgButton from '@/views/MoricHome/components/MoricHomeHamburgButton';
     import { reactive, ref, onMounted } from 'vue';
+    import { getUserInformation } from "@/controllers/userProcessingControllers";
     import Loading from '@/utils/loading';
     import { useRouter } from 'vue-router';
     import { useSelfStore } from '@/store/selfStore'; 
+    import Prompt from "@/components/GlobalPrompt/index";
     import NavigationBarObj from '@/views/MoricPage/scripts/NavigationBarObj';
     //整个导航栏的样式变换
     const isHided = ref(true);
     function toggleWidth(){
         isHided .value = !isHided .value;
     }
-    //toolBar参数
-    const selfMsg = useSelfStore();
-
     //导航栏中的导航对象
     const communityBar = reactive(new NavigationBarObj("社区","","#fc3159",false,{
         path:"/Page/communityBar",
@@ -102,11 +101,29 @@
     function navigation(nav,linkTo){
         router.replace(linkTo);
     }
+    //请求资源开始
+    //toolBar参数,参数绑定pinia的全局管理器
+    const selfMsg = useSelfStore();
+    const getUserMsg = getUserInformation();
+    //获取数据后的操作处理程序
+    getUserMsg.catch((err)=>{
+        Prompt(err.alertMsg,false,1000);
+        console.log(err);
+        debugger;
+        let processError = setTimeout(() => {
+            router.replace({
+                path:"/Login",
+                name:"Login",
+            });    
+            clearTimeout(processError);
+        }, 1000);
+    });
     //过渡动画
     onMounted(()=>{
-        setTimeout(() => {
+        let loadingAlima = setTimeout(() => {
             Loading.unLoading();
-        }, 500);
+            clearTimeout(loadingAlima);
+        }, 1000);
     });
     Loading.showLoading();
 </script>
@@ -129,7 +146,7 @@
         padding: .1em 0 .1em 10px;
         flex-direction: column;
         justify-content: space-between;
-        transition:all 0.5s linear;
+        transition:all 0.1s linear;
         overflow: hidden;
         background-color: #ffff;
         border-radius: 15px;

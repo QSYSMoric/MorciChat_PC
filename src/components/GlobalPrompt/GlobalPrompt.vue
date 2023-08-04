@@ -20,7 +20,7 @@
 
 <script setup>
     import { onMounted, reactive, ref } from "vue";
-    const props = defineProps(["alertMsg","state","during","destroyFn"]);
+    const props = defineProps(["alertMsg","state","during","destroyFn","callback"]);
     const isPromt = ref(true);
     const isState = ref(props.state);
     const Prompt = reactive({
@@ -35,8 +35,11 @@
     onMounted(()=>{
         let showPromt = setTimeout(() => {
             isPromt.value = false;
-            clearTimeout(showPromt);
             props.destroyFn();
+            if(props.callback){
+                props.callback();
+            }
+            clearTimeout(showPromt);
         }, props.during);
     });
 </script>
@@ -53,7 +56,7 @@
         background: #ffff;
         grid-template-columns: 30px 1fr;
         box-shadow: 0px 2px 10px rgba(0,0,0,.2);
-        z-index: 99999;
+        z-index: 100000;
     }
     .state{
         width: 100%;

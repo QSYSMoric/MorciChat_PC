@@ -1,7 +1,7 @@
 import { h, render } from 'vue';
 import GlobalPromptVue from './GlobalPrompt.vue';
 
-function Prompt(content,done,timing = 3000){
+function Prompt(content,done,timing = 3000,callback = null){
     // 销毁组件
     const destroyFn = () => {
         render(null, document.body);
@@ -11,7 +11,8 @@ function Prompt(content,done,timing = 3000){
         alertMsg: content,
         state: done,
         during: timing,
-        destroyFn
+        destroyFn,
+        callback
     });
     render(vnode, document.body);
 };

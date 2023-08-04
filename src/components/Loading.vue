@@ -45,7 +45,7 @@
         justify-content: center;
         align-items: center;
         background: #ffff;
-        z-index: 99999999;
+        z-index: 99999;
     }
     .container{
         position: relative;

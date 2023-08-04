@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 
 function getCookie(){
-    return Cookies.get("isLoggedin")?true:false;
+    return Boolean(Cookies.get("isLoggedin") === "true")?true:false;
 }
 
 function setCookie(){
