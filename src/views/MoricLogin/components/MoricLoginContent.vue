@@ -1,7 +1,7 @@
 <template>
   <div class="MoricLoginContent">
     <div class="background_top">
-        <span class="top_icon">
+        <span class="top_icon" @click="exitMoric">
             
         </span>
         <span class="top_titile">
@@ -133,6 +133,13 @@
             //     });
             //     clearTimeout(loginOnclick);
             // }, 1000);
+        });
+    }
+    //返回按钮
+    function exitMoric(){
+        router.replace({
+            path:"/",
+            name:"Home",
         });
     }
 </script>

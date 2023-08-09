@@ -45,8 +45,8 @@
             <li></li>
             <li @click="showComment" :class="{
               momentsToolActive:isToolActive
-            }"> 99</li>
-            <li> 99</li>
+            }"><span></span> 99</li>
+            <li><span></span> 99</li>
           </ul>
         </section>
         <section class="comment" v-if="isComment">
@@ -312,11 +312,11 @@
     border-radius: 5px;
   }
   .postCommentsButton:hover{
-    transform: translateY(-3px) scale(1.1);
+    transform: translateY(-3px) scale(1.02);
     box-shadow: 0 2px 3px rgba(0, 0, 0,.2);
   }
   .postCommentsButton:active{
-    transform: translateY(-1px) scale(1.1);
+    transform: translateY(-1px) scale(1.02);
     box-shadow: 0 2px 1px rgba(0, 0, 0,.2);
   }
   .commentUser{

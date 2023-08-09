@@ -4,10 +4,14 @@
 
 <script>
 import '@/assets/styles/err.css';
+import SocketModule from "@/utils/socketIO";
+import { onBeforeUnmount } from "vue";
 export default {
   name: 'App',
   setup(){
-    
+    onBeforeUnmount(()=>{
+      SocketModule.end();
+    })
   }
 }
 </script>
@@ -92,6 +96,7 @@ export default {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    user-select: none;
   }
   @media(max-width:767px){
     *::-webkit-scrollbar-thumb{

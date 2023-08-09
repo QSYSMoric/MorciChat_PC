@@ -30,8 +30,8 @@
                         {{selfMsg.selfName}}
                     </span>
                 </div>
-                <div class="black">
-                    <span class="icon"></span>
+                <div class="black" @click="quitMoric">
+                    <span class="icon return"></span>
                     <span class="title" :class="{hide:isHided}">下次再会</span>
                 </div>
             </div>
@@ -55,7 +55,10 @@
     import { useRouter } from 'vue-router';
     import { useSelfStore } from '@/store/selfStore'; 
     import Prompt from "@/components/GlobalPrompt/index";
+    import SocketModule from "@/utils/socketIO";
     import NavigationBarObj from '@/views/MoricPage/scripts/NavigationBarObj';
+    //初始化socket.io通道
+    SocketModule.connect(process.env.VUE_APP_API_URL);
     //整个导航栏的样式变换
     const isHided = ref(true);
     function toggleWidth(){
@@ -92,7 +95,7 @@
         PubSub.subscribe(`${node.subscribleName}on`,(_)=>{
             node.onActive();
         }); 
-        PubSub.subscribe(`${node.subscribleName}off`,()=>{
+        PubSub.subscribe(`${node.subscribleName}off`,(_)=>{
             node.offActive();
         });
     });
@@ -100,6 +103,13 @@
     const router = useRouter();
     function navigation(nav,linkTo){
         router.replace(linkTo);
+    }
+    //退出按钮
+    function quitMoric(){
+        router.replace({
+            path:"/",
+            name:"Home",
+        });
     }
     //请求资源开始
     //toolBar参数,参数绑定pinia的全局管理器
@@ -236,6 +246,7 @@
         align-items: center;
         grid-template-columns: max-content 1fr;
         transition: all .2s linear;
+        user-select: none;
     }
     @media(max-width:767px){  
         .navigationBar li{
@@ -302,7 +313,10 @@
     .black .title{
         font-size: .8em;
     }
-
+    .return{
+        color: #fc3d38;
+        font-weight: 600;
+    }
     .active{
         position: relative;
         background: #f0eff5;

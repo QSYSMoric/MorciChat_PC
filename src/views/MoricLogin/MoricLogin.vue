@@ -3,7 +3,7 @@
         <div class="login_background">
             <div class="login_background_content">
                 <div class="background_top">
-                    <span class="top_icon">
+                    <span class="top_icon" @click="exitMoric">
                         
                     </span>
                     <span class="top_titile">
@@ -39,7 +39,16 @@
 <script setup>
     import MoricHomeAnimation from './components/MoricHomeAnimation.vue';
     import Loading from '@/utils/loading';
+    import { useRouter } from 'vue-router';
     import { onMounted } from 'vue';
+    const router = useRouter();
+    //返回按钮
+    function exitMoric(){
+        router.replace({
+            path:"/",
+            name:"Home",
+        });
+    }
     onMounted(()=>{
         setTimeout(() => {
             Loading.unLoading();

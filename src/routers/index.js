@@ -48,10 +48,9 @@ const router = createRouter({
 //验证下一个路由是否需要验证用户在线？
 router.beforeEach((to,from,next)=>{
     if(to.meta.requiresAuth){
-        console.log(cookies.getCookie())
         if(cookies.getCookie()){
             return next();
-        }
+        };
         Prompt("请登录",false,1000,()=>{next({
             path:"/Login",
             name:"Login",
