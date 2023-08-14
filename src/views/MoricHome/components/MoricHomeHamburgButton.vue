@@ -45,6 +45,7 @@ export default {
     background: #ffff;
     z-index: 11;  
     box-shadow: 2px 2px 5px rgba(5, 38, 48,.4);
+    user-select: none;
     cursor: pointer;
   }
   @media(max-width:767px){

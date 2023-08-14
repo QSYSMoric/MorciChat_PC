@@ -11,7 +11,7 @@ export default {
   setup(){
     onBeforeUnmount(()=>{
       SocketModule.end();
-    })
+    });
   }
 }
 </script>

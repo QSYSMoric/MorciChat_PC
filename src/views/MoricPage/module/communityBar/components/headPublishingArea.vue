@@ -55,6 +55,7 @@
 <script setup> 
     import { ref,computed, reactive  } from "vue";
     import Prompt from "@/components/GlobalPrompt/index";
+    import MoricMoments from "../scripts/MoricMoments";
     const textareaNode = ref("");
     const updateImg = ref(null);
     const inputText = reactive({
@@ -105,17 +106,25 @@
     }
     //发布朋友圈
     function publishMoments(){
-        const formDataArray = Array.from(UploadImgData.values());
-        if(!formDataArray.length){
+        //获取图片列表
+        let formImgDataArray = Array.from(UploadImgData.values());
+        //获取文字列表
+        let formTextData = inputText.value;
+        if(!formImgDataArray.length && !formTextData){
             Prompt("没有东西分享噢",false,1500);
             return;
         }
+        let userMoments = new MoricMoments(formTextData,formImgDataArray);
+        userMoments.publish().then((data)=>{
+            Prompt("发布成功",true,1500);
+        });
     }
     //删除指定照片
     function deleteUpdatePicture(key){
         displayUploadImg.value.splice(key,1);
         UploadImgData.delete(`img${key}`);
     }
+    //自动增加高
     const textareaHeight = computed(()=>{
         return inputText.value ? `${textareaNode.value.scrollHeight}px` : '2em';
     });
