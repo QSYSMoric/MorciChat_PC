@@ -79,16 +79,18 @@ export default {
   }
   *::-webkit-scrollbar{
       background-color: transparent;
+      opacity: 0;
       width: 12px;
   }
   *::-webkit-scrollbar-thumb{
       background-color: #d2d1d7;
-      border-radius: 8px;
+      border-radius: 5px;
       background-clip: content-box;
       border: 2px solid transparent;
   }
   body[scroll],
   *::-webkit-scrollbar-thumb:hover{
+      opacity: .2;
       background-color: rgba(0,0,0,.5);
       transition: 0s;
   }

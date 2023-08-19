@@ -158,12 +158,10 @@
                     });
                 });
             }).catch((err)=>{
+                //跳转失败
                 isRegisterOnclick.value = true;
-                Prompt(err.alertMsg,false,2000,()=>{
-                    router.replace({
-                        name:"OperateRegister",
-                    });
-                });
+                Prompt(err.alertMsg,false,2000);
+                return;
             });
         });
     }

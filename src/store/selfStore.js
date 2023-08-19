@@ -29,8 +29,5 @@ export const useSelfStore = defineStore('mySelf', {
             this.selfSignature = selfSignature;
             this.selfEmail = selfEmail;
         },
-        setSelfName(){
-            this.selfName = "李四";
-        }
     }
 });

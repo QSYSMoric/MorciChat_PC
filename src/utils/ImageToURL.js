@@ -12,7 +12,7 @@ function imageToUrl(imgData,avatar_type){
         blob = new Blob([new Uint8Array(byteNumbers)], {type: `image/${avatar_type}`});
     }else{
         // 假设 imgData 为 JPG 图片的二进制数据
-        blob = new Blob([imgData], { type: `image/${avatar_type}` });
+        blob = new Blob([imgData], { type: `image/${avatar_type}`});
     }
     //返回引用地址
     let imageUrl = null;

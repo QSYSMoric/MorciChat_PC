@@ -37,7 +37,10 @@
             </div>
         </nav>
         <main class="operationArea">
-            <router-view>
+            <router-view v-slot="{ Component }">
+                <keep-alive>
+                    <component :is="Component" />
+                </keep-alive>
             </router-view>
         </main>
         <footer class="viewsArea">
@@ -56,9 +59,12 @@
     import { useSelfStore } from '@/store/selfStore'; 
     import Prompt from "@/components/GlobalPrompt/index";
     import SocketModule from "@/utils/socketIO";
+    import { useMomentsStore } from '@/store/momentsSessionStore'
     import NavigationBarObj from '@/views/MoricPage/scripts/NavigationBarObj';
     //初始化socket.io通道
     SocketModule.connect(process.env.VUE_APP_API_URL);
+    //开始初始化socket
+    SocketModule.start();
     //整个导航栏的样式变换
     const isHided = ref(true);
     function toggleWidth(){
@@ -111,8 +117,10 @@
             name:"Home",
         });
     }
+
     //请求资源开始
     //toolBar参数,参数绑定pinia的全局管理器
+    //请求个人信息资源
     const selfMsg = useSelfStore();
     const getUserMsg = getUserInformation();
     //获取数据后的操作处理程序
@@ -128,6 +136,11 @@
             clearTimeout(processError);
         }, 1000);
     });
+    
+    //获取社区动态列表开始
+    const moments = useMomentsStore();
+    moments.requestMoments()
+
     //过渡动画
     onMounted(()=>{
         let loadingAlima = setTimeout(() => {

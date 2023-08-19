@@ -1,11 +1,11 @@
 class Moric_Moments{
-    constructor(publishId,publisherId,timing,friendCircleCopy,friendCircleImg,commentformationId){
+    constructor(publishId,publisherId,timing,friendCircleCopy,friendCircleImgs,commentformationId){
         this.publishId = publishId;
         this.publisherId = publisherId;
         this.publishTiming = timing;
         this.friendCircleCopy = friendCircleCopy;
-        this.friendCircleImg = friendCircleImg;
-        this.commentformationId = id;
+        this.friendCircleImg = friendCircleImgs;
+        this.commentformationId = commentformationId;
     }
 }
 export default Moric_Moments;

@@ -1,11 +1,11 @@
 import { io } from 'socket.io-client';
 import Prompt from '@/components/GlobalPrompt';
-
-let token = sessionStorage.getItem("token");
+import socketCommunicationProcessingControllers from '@/controllers/socketCommunicationProcessingControllers';
 
 const SocketModule = {
     socket:null,
     connect(serverUrl){
+        let token = sessionStorage.getItem("token");
         this.socket = io(serverUrl, {
             auth: {
               token: token
@@ -18,7 +18,11 @@ const SocketModule = {
         });
         this.socket.on("success",(mgs)=>{
             console.log(mgs);
-        })
+        });
+    },
+    start(){
+        //接收最新的一条动态
+        this.socket.on("newComent",socketCommunicationProcessingControllers.newMomentsProcess);
     },
     end(){
         //取消所有订阅
