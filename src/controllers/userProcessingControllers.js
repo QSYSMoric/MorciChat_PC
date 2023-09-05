@@ -20,6 +20,7 @@ export async function getUserInformation(){
         //获取到资源后设置到用户全局状态管理中
         userSelf.setSelf(data.userId,data.userName,selfProfileURL,data.userAge,data.userSignature,data.userEmail);
     }catch(err){
+        console.log(err);
         return Promise.reject(err);
     }
 }

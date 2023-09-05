@@ -83,7 +83,8 @@ export default {
       width: 12px;
   }
   *::-webkit-scrollbar-thumb{
-      background-color: #d2d1d7;
+      /* background-color: rgba(0,0,0,.1); */
+      background-color: transparent;
       border-radius: 5px;
       background-clip: content-box;
       border: 2px solid transparent;

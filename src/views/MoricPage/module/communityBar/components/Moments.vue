@@ -38,7 +38,8 @@
         <section class="momentsTool">
           <ul>
             <li></li>
-            <li @click="showComment" :class="{
+            <li @click="showComment" 
+            :class="{
               momentsToolActive:isToolActive
             }"><span></span> 99</li>
             <li><span></span> 99</li>
@@ -52,7 +53,7 @@
             v-model="inputText.value"
             ref="textareaNode">
             </textarea>
-            <button class="postCommentsButton">
+            <button class="postCommentsButton" @click.stop="postComments">
               发表
             </button>
           </div>
@@ -127,12 +128,16 @@
 </template>
 
 <script setup>
+  import Prompt from "@/components/GlobalPrompt";
   import { ref,computed,reactive } from "vue";
   import { useUserInformation } from "@/store/userInformation";
+  import { useCommentStore } from "@/store/commentSessionStore";
+  import { useSelfStore } from "@/store/selfStore";
   const isComment = ref(false);
   const textareaNode = ref("");
   const isToolActive = ref(false);
   const moreActive = ref(false);
+  const userSelf = useSelfStore();
   //是否展示品论区
   function showComment(){
     isComment.value = !isComment.value;
@@ -150,20 +155,45 @@
   const textareaHeight = computed(()=>{
       return inputText.value ? `${textareaNode.value.scrollHeight}px` : '2em';
   });
-
+  //当前评论信息
   const props = defineProps(['momentsObj']);
   const moment = props.momentsObj;
   const userMsg = reactive({
     avater:"",
     userName:"",
-
   });
+  //用户信息
   const userInfo = useUserInformation();
   userInfo.getUserInfoById(moment.publisherId).then((data)=>{
-    console.log(data);
     userMsg.avater = data.userProfile;
     userMsg.userName = data.userName;
   });
+
+  //评论信息
+  const commentInfo = useCommentStore();
+  commentInfo.getCommentList(moment.publishId).then((data)=>{
+    
+  }).catch((err)=>{
+    console.log(err);
+  });
+
+  //发布评论
+  function postComments(){
+    if(!inputText.value){
+      Prompt("请输入内容",false);
+      return;
+    }
+    commentInfo.postCommentToServe({
+      user_id:userSelf.selfId,
+      text_content:inputText.value,
+      comment_img:null,
+      dynamic_id:moment.publishId
+    }).then((data)=>{
+      Prompt(data,true);
+    }).catch((err)=>{
+      Prompt(err,false);
+    });
+  }
 
 </script>
 
@@ -302,7 +332,8 @@
     font-size: .7rem;
     color: #8f8e94;
     transition: transform .2s linear;
-    transform-origin: center;
+    transform-origin: left;
+    user-select: none;
   }
   .momentsTool ul>li:hover{
     color: #157efb;

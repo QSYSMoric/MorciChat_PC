@@ -59,7 +59,8 @@
     import { useSelfStore } from '@/store/selfStore'; 
     import Prompt from "@/components/GlobalPrompt/index";
     import SocketModule from "@/utils/socketIO";
-    import { useMomentsStore } from '@/store/momentsSessionStore'
+    import { useMomentsStore } from '@/store/momentsSessionStore';
+    import { useCommentStore } from "@/store/commentSessionStore";
     import NavigationBarObj from '@/views/MoricPage/scripts/NavigationBarObj';
     //初始化socket.io通道
     SocketModule.connect(process.env.VUE_APP_API_URL);
@@ -110,13 +111,6 @@
     function navigation(nav,linkTo){
         router.replace(linkTo);
     }
-    //退出按钮
-    function quitMoric(){
-        router.replace({
-            path:"/",
-            name:"Home",
-        });
-    }
 
     //请求资源开始
     //toolBar参数,参数绑定pinia的全局管理器
@@ -126,7 +120,6 @@
     //获取数据后的操作处理程序
     getUserMsg.catch((err)=>{
         Prompt(err.alertMsg,false,1000);
-        console.log(err);
         debugger;
         let processError = setTimeout(() => {
             router.replace({
@@ -140,6 +133,16 @@
     //获取社区动态列表开始
     const moments = useMomentsStore();
     moments.requestMoments()
+    const comments = useCommentStore();
+    //退出按钮
+    function quitMoric(){
+        moments.clearExit();
+        comments.clearExit();
+        router.replace({
+            path:"/",
+            name:"Home",
+        });
+    }
 
     //过渡动画
     onMounted(()=>{

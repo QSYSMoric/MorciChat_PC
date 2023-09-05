@@ -10,7 +10,7 @@ export const useSelfStore = defineStore('mySelf',{
     actions:{
         async getUserInfoById(userId){
             if(!this.usersMsg.has(userId)){
-
+                
             }
             this.usersMsg.get(userId);
         },

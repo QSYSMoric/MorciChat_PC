@@ -6,35 +6,43 @@ import imageToUrl from '@/utils/ImageToURL';
 export const useUserInformation = defineStore('userInformation',{
     state:()=>({
         userInformationList: new Map(),
+        userInfoRequestCollective: new Map()
     }),
     actions:{
-        getUserInfoById(userId){
+        async getUserInfoById(userId){
             return new Promise((resolve,reject)=>{
                 if(this.userInformationList.has(userId)){
                     return resolve(this.userInformationList.get(userId));
-                }
-                this.getUserInfoByIdToServe(userId).then((data)=>{
-                    if(!data.state){
-                        throw new Error(data.alertMsg);
+                };
+                //检查是否是同一个请求
+                if(this.userInfoRequestCollective.has(userId)){
+                    // 添加到请求队列中，并在请求完成后返回结果
+                    return resolve(this.userInfoRequestCollective.get(userId));
+                }else{
+                    try {
+                        this.userInfoRequestCollective.set(userId,this.getUserInfoByIdToServe(userId));
+                        return resolve(this.userInfoRequestCollective.get(userId)); 
+                    } catch (error) {
+                        return reject(error.message);
                     }
-                    const userInfo = data.body;
-                    userInfo.userProfile = imageToUrl(userInfo.userProfile,userInfo.userProfileType);
-                    this.userInformationList.set(userInfo.userId,userInfo);
-                    return resolve(userInfo);
-                }).catch((err)=>{
-                    return reject(err.message);
-                });
+                }
             });
         },
         async getUserInfoByIdToServe(userId){
             try {
-                const userInfo = await axios({
+                const request = await axios({
                     method:"post",
                     url:"/moric/pickInformation",
                     data:{
                         userId
                     }
                 });
+                if(!request.state){
+                    throw new Error(userInfo.alertMsg);
+                }
+                const userInfo = request.body;
+                userInfo.userProfile = imageToUrl(userInfo.userProfile,userInfo.userProfileType);
+                this.userInformationList.set(userInfo.userId,userInfo);
                 return Promise.resolve(userInfo);
             } catch (error) {
                 console.log(error.message);

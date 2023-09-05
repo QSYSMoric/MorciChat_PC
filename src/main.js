@@ -11,7 +11,7 @@ import 'animate.css';
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 const app = createApp(App);
-app.directive('moriclist',animateLodingList)
+app.directive('moriclist',animateLodingList);
 app.use(router);
 app.use(pinia);
 app.mount('#app');

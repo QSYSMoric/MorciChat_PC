@@ -41,6 +41,9 @@ export const useMomentsStore = defineStore('moments',{
             }catch(error){
                 return Promise.reject(error.message);       
             }
+        },
+        clearExit(){
+            this.moments.length = 0;
         }
     }
 });

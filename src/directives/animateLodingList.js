@@ -8,7 +8,7 @@ const ob = new IntersectionObserver((entries)=>{
         if(entry.isIntersecting){
             const animation = animationMap.get(entry.target);
             animation.play();
-            // ob.unobserve(entry.target); // 停止监听
+            ob.unobserve(entry.target); // 停止监听
         }
     }
 });
