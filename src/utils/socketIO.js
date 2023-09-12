@@ -22,7 +22,9 @@ const SocketModule = {
     },
     start(){
         //接收最新的一条动态
-        this.socket.on("newComent",socketCommunicationProcessingControllers.newMomentsProcess);
+        this.socket.on("newMoment",socketCommunicationProcessingControllers.newMomentsProcess);
+        //接收最新的一条动态评论
+        this.socket.on("newComment",socketCommunicationProcessingControllers.newCommentsProcess);
     },
     end(){
         //取消所有订阅

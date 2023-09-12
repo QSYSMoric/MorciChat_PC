@@ -79,6 +79,7 @@ export default {
   }
   *::-webkit-scrollbar{
       background-color: transparent;
+      height: 8px;
       opacity: 0;
       width: 12px;
   }

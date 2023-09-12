@@ -1,9 +1,11 @@
 <template>
-  <div>
-    <HeadPublishingArea/>
-  </div>
-  <div>
-    <ShowMomentsArea/>
+  <div class="community">
+    <div>
+      <HeadPublishingArea/>
+    </div>
+    <div>
+      <ShowMomentsArea/>
+    </div>
   </div>
 </template>
 
@@ -15,10 +17,14 @@
   const route = useRoute();
   PubSub.publish(`${route.name}on`);
   onBeforeRouteLeave((to,from)=>{
-    PubSub.publish(`${from.name}off`)
+    PubSub.publish(`${from.name}off`);
   });
 </script>
 
 <style>
-
+  .community{
+    width: 100%;
+    overflow: auto;
+    height: 100%;
+  }
 </style>

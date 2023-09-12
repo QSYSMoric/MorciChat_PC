@@ -1,11 +1,11 @@
 export default class UserMsg {
     constructor(userId, userName, userEmail, userAge, userSignature, userProfileURL) {
-      this.userProfileURL = userProfileURL;
-      this.userName = userName;
-      this.userId = userId;
-      this.userEmail = userEmail;
-      this.userAge = userAge;
-      this.userSignature = userSignature;
+        this.userProfileURL = userProfileURL;
+        this.userName = userName;
+        this.userId = userId;
+        this.userEmail = userEmail;
+        this.userAge = userAge;
+        this.userSignature = userSignature;
     }
   
     getUserId() {

@@ -1,4 +1,4 @@
-const DISTANCE = 50;
+const DISTANCE = 20;
 const DURATION = 1000;
 
 const animationMap = new WeakMap();

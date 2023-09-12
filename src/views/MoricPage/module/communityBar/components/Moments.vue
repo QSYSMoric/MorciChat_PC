@@ -2,7 +2,8 @@
     <li v-moriclist class="moments" :class="{backdrop:moreActive}">
       <div class="momentsLeft">
         <div class="userAvatar">
-          <img :src="userMsg.avater" alt="头像">
+          <img :src="userMsg.avater" alt="头像" v-if="userMsg.avater">
+          <img src="../../../../../assets/IMG_6803.jpg" alt="" v-else>
         </div>
       </div>
       <div class="momentsRight">
@@ -41,7 +42,8 @@
             <li @click="showComment" 
             :class="{
               momentsToolActive:isToolActive
-            }"><span></span> 99</li>
+            }"
+            v-if="commentInfo.getCommentById(moment.publishId)"><span></span> {{commentInfo.getCommentById(moment.publishId).length}}</li>
             <li><span></span> 99</li>
           </ul>
         </section>
@@ -58,69 +60,13 @@
             </button>
           </div>
           <ul>
-            <li>
-              <div class="commentUser">
-                <img src="../../../../../assets/IMG_6803.jpg" alt="">
-              </div>
-              <div class="commentUserMag">
-                <div class="commentUserName">
-                  测试用户1
-                </div>
-                <div class="commentUserData">
-                  666
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="commentUser">
-                <img src="../../../../../assets/IMG_6803.jpg" alt="">
-              </div>
-              <div class="commentUserMag">
-                <div class="commentUserName">
-                  测试用户1
-                </div>
-                <div class="commentTiming">
-                  19:05
-                </div>
-                <div class="commentUserData">
-                  666
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="commentUser">
-                <img src="../../../../../assets/IMG_6803.jpg" alt="">
-              </div>
-              <div class="commentUserMag">
-                <div class="commentUserName">
-                  测试用户1
-                </div>
-                <div class="commentTiming">
-                  19:05
-                </div>
-                <div class="commentUserData">
-                  666
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="commentUser">
-                <img src="../../../../../assets/IMG_6803.jpg" alt="">
-              </div>
-              <div class="commentUserMag">
-                <div class="commentUserName">
-                  测试用户1
-                </div>
-                <div class="commentTiming">
-                  19:05
-                </div>
-                <div class="commentUserData">
-                  其实在 iPhone 上显示的色域要比我们作图时的 RGB 色域要广。
-                  所以在 iPhone 上设计怎样的颜色都可以。只要符合产品气质并且在色彩心理学理论上思考，
-                  用什么颜色是设计师的自由。官方建议的系统色彩如下：
-                </div>
-              </div>
-            </li>
+            <TransitionGroup 
+              name="list"
+              enter-active-class="animate__animated animate__fadeInTopRight">
+              <li v-for="(comment) in commentInfo.getCommentById(moment.publishId)" :key="comment">
+                <Comments :commentobj="comment"></Comments>
+              </li>
+            </TransitionGroup>
           </ul>
         </section>
       </div>
@@ -129,12 +75,13 @@
 
 <script setup>
   import Prompt from "@/components/GlobalPrompt";
+  import Comments from "./Comments.vue";
   import { ref,computed,reactive } from "vue";
   import { useUserInformation } from "@/store/userInformation";
   import { useCommentStore } from "@/store/commentSessionStore";
   import { useSelfStore } from "@/store/selfStore";
   const isComment = ref(false);
-  const textareaNode = ref("");
+  const textareaNode = ref(null);
   const isToolActive = ref(false);
   const moreActive = ref(false);
   const userSelf = useSelfStore();
@@ -152,7 +99,10 @@
     moreActive.value = !moreActive.value;
   }
   //控制评论高度自动增长
-  const textareaHeight = computed(()=>{
+  let textareaHeight = computed(()=>{
+      if(!textareaNode.value){
+        return `2em`;
+      }
       return inputText.value ? `${textareaNode.value.scrollHeight}px` : '2em';
   });
   //当前评论信息
@@ -171,9 +121,8 @@
 
   //评论信息
   const commentInfo = useCommentStore();
-  commentInfo.getCommentList(moment.publishId).then((data)=>{
-    
-  }).catch((err)=>{
+  // 有新的评论
+  commentInfo.getCommentList(moment.publishId).catch((err)=>{
     console.log(err);
   });
 
@@ -396,32 +345,21 @@
     transform: translateY(-1px) scale(1.02);
     box-shadow: 0 2px 1px rgba(0, 0, 0,.2);
   }
-  .commentUser{
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+  .list-move, /* 对移动中的元素应用的过渡 */
+  .list-enter-active,
+  .list-leave-active {
+    transition: all 0.5s ease;
   }
-  .commentUser>img{
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
+
+  .list-enter-from,
+  .list-leave-to {
+    opacity: 0;
+    transform: translateX(40px);
   }
-  .commentUserMag{
-    width: 100%;
-    height: max-content;
-  }
-  .commentUserName{
-    font-size: .6em;
-    color: #8f8e94;
-  } 
-  .commentTiming{
-    font-size: 8pt;
-    color:#8f8e94;
-  }
-  .commentUserData{
-    font-size: .8em;
-    /* letter-spacing: 1px; */
-    padding-bottom: 15px;
-    border-bottom: solid 1px #e6e5eb;
+
+  /* 确保将离开的元素从布局流中删除
+    以便能够正确地计算移动的动画。 */
+  .list-leave-active {
+    position: absolute;
   }
 </style>

@@ -18,7 +18,6 @@ export const useMomentsStore = defineStore('moments',{
             this.moments.push(moment);
         },
         addNewMoment(moment){
-            console.log(moment);
             this.moments.unshift(moment);
         },
         async requestMoments(){

@@ -1,19 +1,25 @@
 import bufferToBase64 from "@/utils/bufferToBase64";
 import { useMomentsStore } from "@/store/momentsSessionStore";
+import { useCommentStore } from "@/store/commentSessionStore";
+
 import formatDate from "@/utils/formatDate";
 
 export default {
-    newMomentsProcess(newComent){
+    newMomentsProcess(newMoment){
         const moment = useMomentsStore();
-        if(newComent.friendCircleImg){
-            bufferToBase64.buffersToBase64Array(newComent.friendCircleImg).then((data)=>{
-                newComent.friendCircleImg = data;
-                newComent.publishTiming = formatDate(newComent.publishTiming);
-                return moment.addNewMoment(newComent);
+        newMoment.publishTiming = formatDate(newMoment.publishTiming);
+        if(newMoment.friendCircleImg){
+            bufferToBase64.buffersToBase64Array(newMoment.friendCircleImg).then((data)=>{
+                newMoment.friendCircleImg = data;
+                return moment.addNewMoment(newMoment);
             });
         }else{
-            newComent.publishTiming = formatDate(newComent.publishTiming);
-            return moment.addNewMoment(newComent);
+            return moment.addNewMoment(newMoment);
         }
+    },
+    newCommentsProcess(newComment){
+        const comment = useCommentStore();
+        newComment.timing = formatDate(newComment.timing);
+        comment.addNewComment(newComment);
     }
 }

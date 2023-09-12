@@ -38,7 +38,7 @@
         </nav>
         <main class="operationArea">
             <router-view v-slot="{ Component }">
-                <keep-alive>
+                <keep-alive :include="['community']">
                     <component :is="Component" />
                 </keep-alive>
             </router-view>
@@ -61,6 +61,7 @@
     import SocketModule from "@/utils/socketIO";
     import { useMomentsStore } from '@/store/momentsSessionStore';
     import { useCommentStore } from "@/store/commentSessionStore";
+    import additionalOperations from './scripts/additionalOperations';
     import NavigationBarObj from '@/views/MoricPage/scripts/NavigationBarObj';
     //初始化socket.io通道
     SocketModule.connect(process.env.VUE_APP_API_URL);
@@ -138,6 +139,7 @@
     function quitMoric(){
         moments.clearExit();
         comments.clearExit();
+        SocketModule.end();
         router.replace({
             path:"/",
             name:"Home",
@@ -152,6 +154,9 @@
         }, 1000);
     });
     Loading.showLoading();
+
+    //额外的异步操作
+    Promise.resolve(additionalOperations());
 </script>
 
 <style scoped>
@@ -161,7 +166,7 @@
         height: 100vh;
         padding: 30px;
         display: grid;
-        grid-template-columns: max-content 1fr 20%;
+        grid-template-columns: max-content 1fr 10%;
         background: #f0eff5;
     }
     .sideBar{
@@ -302,19 +307,19 @@
     }
     .user .icon {
         height: 100%;
-        width: 2.2rem;
+        width: 50px;
         border-radius: 50%;
         padding-left: .2em;
     }
     .user .title{
         padding-left: 1em;
     }
-    .user > .icon > img{
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
+    .toolBar .user > .icon > img{
+        width: 2rem;
+        height: 2rem;
+        object-fit:cover;
         border-radius: 50%;
-        object-position: bottom;
+        object-position: center;
     }
     .black{
         margin-top: 10px;
@@ -374,7 +379,7 @@
     .operationArea{
         width: 100%;
         height: 100%;
-        overflow: auto;
+        overflow: hidden;
         border-radius: 15px;
         padding: 0 24px;
     }
@@ -386,4 +391,4 @@
         height: 100%;
         /* background: #ffff; */
     }
-</style>@/store/selfStore
+</style>

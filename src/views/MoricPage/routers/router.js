@@ -1,4 +1,5 @@
 import PubSub from 'pubsub-js';
+import chatRoomRouter from '../module/chatBar/router/router';
 const routes = [
     {
         path:"communityBar",
@@ -15,6 +16,7 @@ const routes = [
     {
         path:"chatBar",
         name:"chatBar",
+        children:chatRoomRouter,
         component:()=>import('../module/chatBar/chat.vue'),
         meta:{
             requiresAuth: true // 需要验证在线

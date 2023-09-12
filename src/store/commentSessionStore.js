@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import imageToUrl from '@/utils/ImageToURL';
 import axios from '@/utils/api';
 import formatDate from '@/utils/formatDate';
 
@@ -7,6 +6,11 @@ export const useCommentStore = defineStore('comments',{
     state:()=>({
         comments:new Map(),
     }),
+    getters:{
+        getCommentById(state){
+            return (momentId)=> state.comments.get(momentId);
+        }
+    },
     actions:{
         async getCommentList(momentId){
             if(!momentId){
@@ -26,7 +30,12 @@ export const useCommentStore = defineStore('comments',{
                 if(!feedback.state){
                     throw new Error(feedback.alertMsg);
                 }
-                return Promise.resolve(feedback.body);
+                feedback.body.forEach((element,index) => {
+                    //格式化时间
+                    feedback.body[index].timing = formatDate(element.timing);
+                });
+                this.comments.set(momentId,feedback.body);
+                return Promise.resolve(this.comments.get(momentId));
             } catch (error) {
                 return Promise.reject(error.message);     
             }
@@ -46,6 +55,13 @@ export const useCommentStore = defineStore('comments',{
                 return Promise.resolve(feedback.alertMsg);
             } catch (error) {
                 return Promise.reject(error.message);
+            }
+        },
+        addNewComment(comment){
+            try {
+                this.comments.get(comment.dynamic_id).unshift(comment);
+            } catch (error) {
+                console.log(error.message);
             }
         },
         clearExit(){
