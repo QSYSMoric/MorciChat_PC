@@ -9,16 +9,17 @@
         </span>
     </div>
     <textarea
+        :readonly = "inputText.value.length > 500"
         placeholder="输入内容"
         v-model="inputText.value"
         ref="textareaNode">
     </textarea>
     <div class="chatRoomSendingToFriend">
         <div class="chatRoomCount">
-            500/500
+            {{inputText.value.length}}/500
         </div>  
         <div class="chatRoomSubmit">
-            <button class="postCommentsButton">
+            <button class="postCommentsButton" @click.stop="submitToChat">
               发送
             </button>
         </div>
@@ -27,14 +28,31 @@
 </template>
 
 <script setup>
-    import { ref,reactive } from "vue";
-
+    import { ref,reactive, watch } from "vue";
+    import Moric_ChatMsg from "@/class/Moric_ChatMsg";
+    import SocketModule from "@/utils/socketIO";
+    //当前发送对象
+    let props = defineProps(["chatId"]);
+    
     //控制输入内容自动增长
     const textareaNode = ref(null);
     //绑定输入内容
     const inputText = reactive({
         value:"",
     });
+    //监听发送对象是否发生改变
+    watch(()=>{
+        return props.chatId;
+    },()=>{
+        //当发送对象发送改变后清除所有待发送内容
+        inputText.value = "";
+    });
+    //提交按钮
+    function submitToChat(){
+        //构建发送对象
+        let chatMsg = new Moric_ChatMsg(null,null,inputText.value,null,props.chatId);
+        SocketModule.sendMessage(chatMsg);
+    }
 </script>
 
 <style>
@@ -47,6 +65,7 @@
         height: 162px;
         background-color: #ffff;
         border-radius: 0 0 10px 10px;
+        z-index: 10;
     }
     .chatRoomExpression{
         display: flex;

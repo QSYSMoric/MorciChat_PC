@@ -4,8 +4,8 @@
             <span> {{chatUserMsg.chatRoomName}}</span>
             <span></span>
         </div>
-        <ChatRoomHistory :chatId="chatObjId"></ChatRoomHistory>
-        <ChatRoomSend></ChatRoomSend>
+        <ChatRoomHistory :chatId="chatObjId" :friendStatus="route.query.friendStatus"></ChatRoomHistory>
+        <ChatRoomSend :chatId="chatObjId"></ChatRoomSend>
     </div>
 </template>
 
@@ -51,6 +51,7 @@
 <style>
     .chatRoom{
         position: relative;
+        overflow: hidden;
         width: 100%;
         height: 100%;
         padding: 0 10px;
@@ -67,6 +68,7 @@
         padding: 6px 1em;
         border-radius: 10px 10px 0 0;
         background: #ffff;
+        z-index: 10;
     }
     .roomMsg span{
         font-size: 16px;

@@ -1,5 +1,5 @@
 <template>
-    <li @click="tempFn()" :class="{chatActive:user.active}" class="chatUserItem">
+    <li @click="tempFn()" :class="{chatActive:user.active}" class="chatUserItem" ref="chatListRef">
         <div class="chatUserListAvatar">
             <img :src="listItemMsg.img" alt="头像" v-if="listItemMsg.img">
             <img src="@/assets/groupChat.png" alt="默认头像" v-else>
@@ -15,7 +15,7 @@
             </div>
             <div class="userChatLastMsg">
                 <p>
-                    最后一条消息
+                    {{listItemMsg.lastMsg}}
                 </p>
             </div>
         </div>
@@ -28,15 +28,15 @@
     import { useUserInformation } from '@/store/userInformation';
     import PubSub from 'pubsub-js';
     const router= useRouter();
-    const props = defineProps(['user']);
+    const props = defineProps(['user',"index"]);
     let user = ref(props.user);
     //安装状态选中效果，根据聊天历史记录决定选中谁
     //被选中
-    PubSub.subscribe(`chat${user.value.id}ActiveOn`,()=>{
+    PubSub.subscribe(`chat${user.value.friendId}ActiveOn`,()=>{
         user.value.onActive();
     });
     //未选中
-    PubSub.subscribe(`chat${user.value.id}ActiveOff`,()=>{
+    PubSub.subscribe(`chat${user.value.friendId}ActiveOff`,()=>{
         user.value.offActive();
     });
     //当前list的信息设置
@@ -44,21 +44,22 @@
     const listItemMsg = reactive({
         img:null,
         name:null,
+        lastMsg:null,
     });
-
-    userInformation.getUserInfoById(user.value.id).then((data)=>{
+    userInformation.getUserInfoById(user.value.friendId).then((data)=>{
         listItemMsg.name = data.userName;
         listItemMsg.img = data.userProfile;
     }).catch((err)=>{
         console.log(err.message);
     });
 
+    //点击显示聊天记录
     function tempFn(){
         router.push({
             path:`chatBar/chatRoom`,
             name:"chatRoom",
             params: {
-                chatObjId:user.value.id
+                chatObjId:user.value.friendId
             }
         });
     }

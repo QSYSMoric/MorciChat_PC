@@ -13,7 +13,8 @@
               {{userMsg.userName}}
             </span>
             <span class="timing">
-              {{moment.publishTiming.hourMinute}}
+                {{moment.publishTiming.monthDay}} 
+                {{moment.publishTiming.hourMinute}}
             </span>
           </span>
           <span class="more">

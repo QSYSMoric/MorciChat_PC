@@ -15,14 +15,14 @@
     //获取后台聊天历史记录对象
     const chatUserList = useChatUserList();
     let userList = chatUserList.getChatUserList;
-
+    
     //默认导航第一个聊天页面
     const router= useRouter();
     router.push({
         path:`chatBar/chatRoom`,
         name:"chatRoom",
         params: {
-            chatObjId:Boolean(userList[0])?userList[0].id:90000
+            chatObjId:90000
         }
     });
     

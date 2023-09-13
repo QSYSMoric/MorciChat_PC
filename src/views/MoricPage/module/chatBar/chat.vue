@@ -22,7 +22,6 @@
   .chatBar{
     width: 100%;
     height: 100%;
-    overflow: hidden;
     border-radius: 10px;
     display: grid;
     grid-template-columns: 240px 1fr;

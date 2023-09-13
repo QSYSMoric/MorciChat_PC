@@ -1,9 +1,9 @@
 export default class Moric_ChatUser{
-    constructor(id,historyId,remark,friendStatus){
+    constructor(id ,historyId = null,remark = null,friendStatus = null){
         this.active = false;
         this.remark = remark;
         this.friendStatus = friendStatus;
-        this.id = id;
+        this.friendId = id;
         this.historyId = historyId;
     }
     onActive(){

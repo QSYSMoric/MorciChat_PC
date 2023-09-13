@@ -1,11 +1,11 @@
 import { io } from 'socket.io-client';
 import Prompt from '@/components/GlobalPrompt';
 import socketCommunicationProcessingControllers from '@/controllers/socketCommunicationProcessingControllers';
+let token = sessionStorage.getItem("token");
 
 const SocketModule = {
     socket:null,
     connect(serverUrl){
-        let token = sessionStorage.getItem("token");
         this.socket = io(serverUrl, {
             auth: {
               token: token
@@ -25,6 +25,12 @@ const SocketModule = {
         this.socket.on("newMoment",socketCommunicationProcessingControllers.newMomentsProcess);
         //接收最新的一条动态评论
         this.socket.on("newComment",socketCommunicationProcessingControllers.newCommentsProcess);
+        //接收频道广播消息
+        this.socket.on("channelMessages",socketCommunicationProcessingControllers.newchannelMessages);
+    },
+    //发送消息
+    sendMessage(chatMsg){
+        this.socket.emit("sendMessage",chatMsg);
     },
     end(){
         //取消所有订阅
