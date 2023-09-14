@@ -16,8 +16,8 @@
 <script setup>
   import { onBeforeRouteLeave } from 'vue-router';
   import PubSub from 'pubsub-js';
-  import ChatUserListItem from './controllers/ChatUserListItem.vue';
-  import ChatRoom from './controllers/ChatRoom.vue';
+  import ChatUserListItem from './components/ChatUserListItem.vue';
+  import ChatRoom from './components/ChatRoom.vue';
   import { useChatUserList } from '@/store/chatFriendListSessionStore';
   import { reactive, watch } from 'vue';
   const userLists = useChatUserList();

@@ -1,5 +1,5 @@
 <template>
-    <div class="commentUser">
+    <div class="commentUser" @click.stop="ShowUser(commentobj.user_id)">
         <img :src="commentUser.avatar" alt="头像" v-if="commentUser.avatar">
         <img src="@/assets/self.png" alt="默认头像" v-else>
     </div>
@@ -19,6 +19,7 @@
 
 <script setup>
     import { useUserInformation } from "@/store/userInformation";
+    import ShowUser from "@/components/TempUserShow/index";
     import { reactive } from "vue";
     //当前评论信息
     const props = defineProps(['commentobj']);
@@ -45,6 +46,7 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
+        cursor: pointer;
     }
     .commentUser>img{
         width: 100%;
@@ -65,7 +67,7 @@
         color:#8f8e94;
     }
     .commentUserData{
-        font-size: .8em;
+        font-size: 12pt;
         /* letter-spacing: 1px; */
         padding-bottom: 6px;
         border-bottom: solid 1px #e6e5eb;

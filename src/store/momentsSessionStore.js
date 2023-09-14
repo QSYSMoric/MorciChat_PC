@@ -32,9 +32,11 @@ export const useMomentsStore = defineStore('moments',{
                 feedback.body.forEach((element)=>{
                     let timing = formatDate(element.publicTiming);
                     element.publicTiming = timing;
-                    element.friendCirclePictures.forEach((node,index)=>{
-                        element.friendCirclePictures[index] = imageToUrl(node);
-                    });
+                    if(element.friendCirclePictures && element.friendCirclePictures.length){
+                        element.friendCirclePictures.forEach((node,index)=>{
+                            element.friendCirclePictures[index] = imageToUrl(node);
+                        });
+                    }
                     this.addNewMoments(new Moric_Moments(element.publishId,element.publisher,element.publicTiming,element.friendCircleCopy,element.friendCirclePictures,element.commentInformation));
                 });
             }catch(error){

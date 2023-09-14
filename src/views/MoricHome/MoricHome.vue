@@ -29,20 +29,13 @@
 <script setup>
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
-  import Loading from '@/utils/loading';
-  import { onMounted } from 'vue';
   import MoricHomeHamburgButton from '@/views/MoricHome/components/MoricHomeHamburgButton';
   const maskLayerDisplay = ref(true);
   const router = useRouter();
+
   function hideMaskLayer(){
     maskLayerDisplay.value = !maskLayerDisplay.value;
   }
-  onMounted(()=>{
-    setTimeout(() => {
-              Loading.unLoading();
-          }, 1200);
-  });
-  Loading.showLoading();
   
   function go(){
     router.push({

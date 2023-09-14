@@ -72,8 +72,8 @@
     function toggleWidth(){
         isHided .value = !isHided .value;
     }
-    //导航栏中的导航对象
-    const communityBar = reactive(new NavigationBarObj("社区","","#fc3159",false,{
+    //导航栏中的导航对象#218b3f
+    const communityBar = reactive(new NavigationBarObj("社区","","#00c78c",false,{
         path:"/Page/communityBar",
         name:"communityBar"
     },"communityBar"));

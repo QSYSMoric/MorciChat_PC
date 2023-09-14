@@ -27,9 +27,9 @@ export default{
             sessionStorage.setItem("token",data.token);
             return true;
         } catch (err) {
-            console.log(err);
+            console.log(err.alertMsg);
             //提示框
-            Prompt("出错了",false);
+            Prompt(err.alertMsg,false);
             throw err;
         }
     }

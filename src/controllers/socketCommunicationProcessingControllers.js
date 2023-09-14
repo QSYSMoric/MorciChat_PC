@@ -3,6 +3,7 @@ import { useMomentsStore } from "@/store/momentsSessionStore";
 import { useCommentStore } from "@/store/commentSessionStore";
 import { useChatHistoryByUserId } from "@/store/chatHistoryByUserIdStore";
 import formatDate from "@/utils/formatDate";
+import PubSub from "pubsub-js";
 
 export default {
     //处理最新的动态
@@ -29,5 +30,9 @@ export default {
         const chatHistory = useChatHistoryByUserId();
         chatMsg.timing = formatDate(chatMsg.timing);
         chatHistory.addNewChatByServe(chatMsg);
+        PubSub.publish(`chat${chatMsg.dynamic_id}LastMsg`,{
+            text_content:chatMsg.text_content,
+            timing:chatMsg.timing
+        });
     }
 }

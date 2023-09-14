@@ -1,9 +1,9 @@
 <template>
     <li v-moriclist class="moments" :class="{backdrop:moreActive}">
-      <div class="momentsLeft">
+      <div class="momentsLeft" @click.stop="ShowUser(moment.publisherId)">
         <div class="userAvatar">
           <img :src="userMsg.avater" alt="头像" v-if="userMsg.avater">
-          <img src="../../../../../assets/IMG_6803.jpg" alt="" v-else>
+          <img src="../../../../../assets/IMG_6803.jpg" alt="默认头像" v-else>
         </div>
       </div>
       <div class="momentsRight">
@@ -30,7 +30,7 @@
         <section class="copywriting">
           {{moment.friendCircleCopy}}
         </section>
-        <section class="moments_img" v-if="moment.friendCircleImg.length">
+        <section class="moments_img" v-if="moment.friendCircleImg && moment.friendCircleImg.length">
           <ul class="portfolio">
             <li v-for="(img,index) of moment.friendCircleImg" :key="index">
                 <img :src="img" alt="">
@@ -77,6 +77,7 @@
 <script setup>
   import Prompt from "@/components/GlobalPrompt";
   import Comments from "./Comments.vue";
+  import ShowUser from '@/components/TempUserShow/index';
   import { ref,computed,reactive } from "vue";
   import { useUserInformation } from "@/store/userInformation";
   import { useCommentStore } from "@/store/commentSessionStore";
@@ -109,6 +110,7 @@
   //当前评论信息
   const props = defineProps(['momentsObj']);
   const moment = props.momentsObj;
+  console.log(moment);
   const userMsg = reactive({
     avater:"",
     userName:"",
@@ -167,6 +169,7 @@
     height: 100%;
     display: flex;
     justify-content: center;
+    cursor: pointer;
   }
   .userAvatar{
     width: 48px;
@@ -238,7 +241,7 @@
     background: #c8c7cd;
   }
   .copywriting{
-    font-size: .8em;
+    font-size: 12pt;
     font-weight: 400;
     color: var(--background);
     padding: 5px 0;
