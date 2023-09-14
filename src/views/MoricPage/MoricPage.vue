@@ -38,7 +38,7 @@
         </nav>
         <main class="operationArea">
             <router-view v-slot="{ Component }">
-                <keep-alive :include="['community']">
+                <keep-alive>
                     <component :is="Component" />
                 </keep-alive>
             </router-view>
@@ -140,6 +140,8 @@
         moments.clearExit();
         comments.clearExit();
         SocketModule.end();
+        // 重置整个状态树
+        window.localStorage.clear();
         router.replace({
             path:"/",
             name:"Home",

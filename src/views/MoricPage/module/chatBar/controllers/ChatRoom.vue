@@ -1,51 +1,44 @@
 <template>
     <div class="chatRoom">
         <div class="roomMsg">
-            <span> {{chatUserMsg.chatRoomName}}</span>
+            <span> {{ chatUser.roomName }}</span>
             <span></span>
         </div>
-        <ChatRoomHistory :chatId="chatObjId" :friendStatus="route.query.friendStatus"></ChatRoomHistory>
-        <ChatRoomSend :chatId="chatObjId"></ChatRoomSend>
+        <ChatRoomHistory :chatId="chatUser.chatId"></ChatRoomHistory>
+        <ChatRoomSend :chatId="chatUser.chatId"></ChatRoomSend>
     </div>
 </template>
 
 <script setup>
     import ChatRoomSend from './ChatRoomSend.vue';
     import ChatRoomHistory from './ChatRoomHistory.vue';
-    import { useRoute } from 'vue-router';
     import { useUserInformation } from '@/store/userInformation';
-    import { reactive, ref,watch } from 'vue';
-    //传入的参数
-    const route = useRoute();
-    let chatObjId = ref(route.params.chatObjId);
-    //页面信息
-    const userInforMation = useUserInformation();
-    let chatUserMsg = reactive({
-        chatRoomName:null,
+    import { reactive, watch } from 'vue';
+    //用户信息仓库
+    const userInformation = useUserInformation();
+    const props = defineProps(["chatToUser"]);
+    const chatUser = reactive({
+        roomName:"",
+        chatId:props.chatToUser.friendId,
     });
-    //初始化时候
-    userInforMation.getUserInfoById(chatObjId.value).then((data)=>{
-        chatUserMsg.chatRoomName = data.userName
+    //初始化房间信息
+    userInformation.getUserInfoById(chatUser.chatId).then((data)=>{
+        chatUser.roomName = data.userName
     }).catch((err)=>{
-        console.log(err.message);
+        console.log(err);
     });
-    //监听传入的chatId用来更新聊天历史记录
+    //监听对象id更新聊天历史
     watch(()=>{
-        return route.params.chatObjId;
-    },(newUserId)=>{
-        if(newUserId){
-            chatObjId.value = newUserId;
-            //重新获取房间信息
-            userInforMation.getUserInfoById(newUserId).then((data)=>{
-                chatUserMsg.chatRoomName = data.userName
-            }).catch((err)=>{
-                console.log(err.message);
-            });
-        }
-    },{
-        deep:true
+        return props.chatToUser;
+    },(newValue)=>{
+        chatUser.chatId = newValue.friendId;
+        //更改房间信息
+        userInformation.getUserInfoById(newValue.friendId).then((data)=>{
+            chatUser.roomName = data.userName
+        }).catch((err)=>{
+            console.log(err);
+        });
     });
-
 </script>
 
 <style>

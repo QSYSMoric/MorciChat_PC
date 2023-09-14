@@ -5,11 +5,15 @@ export default class Moric_ChatUser{
         this.friendStatus = friendStatus;
         this.friendId = id;
         this.historyId = historyId;
+        this.lastMsg = null;
     }
     onActive(){
         this.active = true;
     }
     offActive(){
         this.active = false;
+    }
+    setLastMsg(text){
+        this.lastMsg = text;
     }
 }

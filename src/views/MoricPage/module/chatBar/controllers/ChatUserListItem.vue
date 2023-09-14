@@ -1,5 +1,5 @@
 <template>
-    <li @click="tempFn()" :class="{chatActive:user.active}" class="chatUserItem" ref="chatListRef">
+    <li @click="selectChatUser" :class="{chatActive:user.active}" class="chatUserItem">
         <div class="chatUserListAvatar">
             <img :src="listItemMsg.img" alt="头像" v-if="listItemMsg.img">
             <img src="@/assets/groupChat.png" alt="默认头像" v-else>
@@ -10,7 +10,7 @@
                     {{listItemMsg.name}}
                 </span>
                 <span>
-                    13:00
+                    {{listItemMsg.lastMsgTiming}}
                 </span>
             </div>
             <div class="userChatLastMsg">
@@ -24,45 +24,41 @@
 
 <script setup>
     import { reactive, ref } from 'vue';
-    import { useRouter } from 'vue-router';
     import { useUserInformation } from '@/store/userInformation';
     import PubSub from 'pubsub-js';
-    const router= useRouter();
-    const props = defineProps(['user',"index"]);
+    const props = defineProps(['user',"select"]);
     let user = ref(props.user);
-    //安装状态选中效果，根据聊天历史记录决定选中谁
-    //被选中
-    PubSub.subscribe(`chat${user.value.friendId}ActiveOn`,()=>{
+
+    //记录用户点击了哪个id
+    function selectChatUser(){
         user.value.onActive();
-    });
-    //未选中
-    PubSub.subscribe(`chat${user.value.friendId}ActiveOff`,()=>{
-        user.value.offActive();
-    });
+        props.select(user.value);
+    }
     //当前list的信息设置
     const userInformation = useUserInformation();
     const listItemMsg = reactive({
         img:null,
         name:null,
-        lastMsg:null,
+        lastMsg:"暂时没有新的消息",
+        lastMsgTiming:"2023",
     });
+
+    //获取最后一条信息
+    PubSub.subscribe(`chat${user.value.friendId}LastMsg`,(_,newChat)=>{
+        if(!newChat){
+            return;
+        }
+        listItemMsg.lastMsgTiming = `${newChat.timing.monthDay} ${newChat.timing.hourMinute}`;
+        listItemMsg.lastMsg = newChat.text_content;
+    });
+
+    //获取当前用户信息
     userInformation.getUserInfoById(user.value.friendId).then((data)=>{
         listItemMsg.name = data.userName;
         listItemMsg.img = data.userProfile;
     }).catch((err)=>{
         console.log(err.message);
     });
-
-    //点击显示聊天记录
-    function tempFn(){
-        router.push({
-            path:`chatBar/chatRoom`,
-            name:"chatRoom",
-            params: {
-                chatObjId:user.value.friendId
-            }
-        });
-    }
 </script>
 
 <style>
@@ -94,6 +90,10 @@
     .userChatInfo > span{
         color: #052630;
         font-size: 14px;
+    }
+    .userChatInfo > span:nth-child(2){
+        font-size: 8px;
+        color:#8f8e94;
     }
     .userChatLastMsg{
         padding-top: 8px;

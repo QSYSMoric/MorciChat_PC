@@ -3,11 +3,11 @@ import Moric_ChatUser from '@/class/Moric_ChatUser';
 import { useChatHistoryByUserId } from "@/store/chatHistoryByUserIdStore";
 import axios from "@/utils/api";
 
-//聊天记录store
+//聊天列表
 const chatHistory = useChatHistoryByUserId();
 export const useChatUserList = defineStore("chatUserList",{
     state:()=>({
-        chatUserList:[]
+        chatUserList:[new Moric_ChatUser(10003)]
     }),
     getters:{
         getChatUserList(state){
@@ -29,6 +29,9 @@ export const useChatUserList = defineStore("chatUserList",{
                 chatHistory.createTempHistory(element.friendId);
                 this.chatUserList.push(new Moric_ChatUser(element.friendId,element.chatHistory,element.remark,element.friendStatus));
             });
+        },
+        clear(){
+            
         }
     }
 });

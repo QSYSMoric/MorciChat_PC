@@ -10,11 +10,8 @@
 <script setup>
     import ChatHistoryItem from './ChatHistoryItem.vue'
     import { reactive, watch } from "vue";
-    import PubSub from 'pubsub-js';
-    import { onBeforeRouteLeave } from 'vue-router';
     import { useChatHistoryByUserId } from '@/store/chatHistoryByUserIdStore';
     let props = defineProps(["chatId"]);
-    PubSub.publish(`chat${props.chatId}ActiveOn`);
     //获取聊天记录
     let chatHIstory = useChatHistoryByUserId();
     //页面初始化
@@ -24,20 +21,11 @@
     //监听传入参数变化
     watch(()=>{
         return props.chatId
-    },(newValue,oldValue)=>{
+    },(newValue)=>{
         //改变数据渲染
         chatList.body = chatHIstory.getChatHistoryById(Number(newValue));
-        //关闭之前的选中
-        if(oldValue){
-            PubSub.publish(`chat${oldValue}ActiveOff`);
-        }
-        //打开新的选中
-        PubSub.publish(`chat${newValue}ActiveOn`);
     });
-    //离开本页面之前清除选中状态
-    onBeforeRouteLeave(()=>{
-        PubSub.publish(`chat${props.chatId}ActiveOff`);
-    });
+
 </script>
 
 <style>

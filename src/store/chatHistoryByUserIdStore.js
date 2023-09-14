@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "@/utils/api";
 import formatDate from "@/utils/formatDate";
+import PubSub from 'pubsub-js';
 
 export const useChatHistoryByUserId = defineStore("chatHistoryByUserId",{
     state:()=>({
@@ -39,8 +40,14 @@ export const useChatHistoryByUserId = defineStore("chatHistoryByUserId",{
                 if(feedback.body.length){
                     feedback.body.forEach((element,index)=>{
                         feedback.body[index].timing = formatDate(element.timing);
-                    })
+                    });
                     chatHistory.push(...feedback.body);
+                    //发布最后一条消息
+                    let lastMsg = chatHistory[chatHistory.length - 1];
+                    PubSub.publish(`chat${lastMsg.dynamic_id}LastMsg`,{
+                        text_content:lastMsg.text_content,
+                        timing:lastMsg.timing
+                    });
                 }
             } catch (error) {
                 return Promise.reject(error.message);
@@ -50,6 +57,11 @@ export const useChatHistoryByUserId = defineStore("chatHistoryByUserId",{
         addNewChatByServe(chatMsg){
             console.log(chatMsg);
             this.chatHistory.get(chatMsg.dynamic_id).push(chatMsg);
+        },
+        //获取最后一条消息
+        async getChatLastMsgByid(friendId){
+            let templ = this.createTempHistory(friendId);
+            return Promise.resolve(templ[length]);
         }
     }
 });

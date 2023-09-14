@@ -1,11 +1,11 @@
 import { io } from 'socket.io-client';
 import Prompt from '@/components/GlobalPrompt';
 import socketCommunicationProcessingControllers from '@/controllers/socketCommunicationProcessingControllers';
-let token = sessionStorage.getItem("token");
 
 const SocketModule = {
     socket:null,
     connect(serverUrl){
+        let token = sessionStorage.getItem("token");
         this.socket = io(serverUrl, {
             auth: {
               token: token
