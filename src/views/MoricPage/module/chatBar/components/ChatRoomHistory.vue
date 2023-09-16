@@ -1,29 +1,26 @@
 <template>
-    <ul class="chatRoomHistory" v-if="chatList.body.length">
+    <ul class="chatRoomHistory">
         <li class="warning">
             若非好友，发送消息的历史记录将不再保存！！！
         </li>
-        <ChatHistoryItem v-for="(node,index) in chatList.body" :key="index" :index="index" :chat="node"></ChatHistoryItem>
+        <ChatHistoryItem v-for="(node) in chatHIstory.getChatHistoryById(historys)" :key="node" :chat="node"></ChatHistoryItem>
     </ul>
 </template>
 
 <script setup>
     import ChatHistoryItem from './ChatHistoryItem.vue'
-    import { reactive, watch } from "vue";
+    import { ref, watch } from "vue";
     import { useChatHistoryByUserId } from '@/store/chatHistoryByUserIdStore';
-    let props = defineProps(["chatId"]);
+    let props = defineProps(["historyId"]);
     //获取聊天记录
     let chatHIstory = useChatHistoryByUserId();
     //页面初始化
-    let chatList = reactive({
-        body:chatHIstory.getChatHistoryById(Number(props.chatId))
-    });
+    let historys = ref(props.historyId)
     //监听传入参数变化
     watch(()=>{
-        return props.chatId
+        return props.historyId
     },(newValue)=>{
-        //改变数据渲染
-        chatList.body = chatHIstory.getChatHistoryById(Number(newValue));
+        historys.value = newValue;
     });
 
 </script>

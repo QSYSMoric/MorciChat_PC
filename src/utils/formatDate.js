@@ -1,17 +1,18 @@
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const monthDay = `${month}-${day < 10 ? '0' + day : day}`;
-    const hour = date.getHours();
-    const minute = date.getMinutes();
-    const hourMinute = `${hour < 10 ? '0' + hour : hour}:${minute < 10 ? '0' + minute : minute}`;
+import dayjs from "dayjs";
 
-    return {
-      year,
-      monthDay,
-      hourMinute
-    };
+function formatDate(dateString) {
+  const dateTime = dayjs(dateString);
+  const year = dateTime.year();
+  const monthDay = dateTime.format("MM-DD");
+  const hourMinute = dateTime.format("HH:mm");
+  const now = dateTime.format('YYYY-MM-DD HH:mm:ss');
+
+  return {
+    year,
+    monthDay,
+    now,
+    hourMinute
+  };
 }
+
 export default formatDate;

@@ -26,11 +26,17 @@ const SocketModule = {
         //接收最新的一条动态评论
         this.socket.on("newComment",socketCommunicationProcessingControllers.newCommentsProcess);
         //接收频道广播消息
-        this.socket.on("channelMessages",socketCommunicationProcessingControllers.newchannelMessages);
+        this.socket.on("groupChatMessages",socketCommunicationProcessingControllers.newchannelMessages);
+        //接收私信
+        this.socket.on("privateMessage",socketCommunicationProcessingControllers.privateMessage);
     },
     //发送消息
-    sendMessage(chatMsg){
-        this.socket.emit("sendMessage",chatMsg);
+    sendMessage(chatId,chatMsg){
+        if(chatId >= 90000){
+            this.socket.emit("groupChatMessages",chatMsg);
+        }else{
+            this.socket.emit("privateMessage",chatMsg);
+        }
     },
     end(){
         //取消所有订阅

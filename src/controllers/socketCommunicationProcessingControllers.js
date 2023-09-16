@@ -2,8 +2,9 @@ import bufferToBase64 from "@/utils/bufferToBase64";
 import { useMomentsStore } from "@/store/momentsSessionStore";
 import { useCommentStore } from "@/store/commentSessionStore";
 import { useChatHistoryByUserId } from "@/store/chatHistoryByUserIdStore";
+import { useChatUserList } from "@/store/chatFriendListSessionStore";
 import formatDate from "@/utils/formatDate";
-import PubSub from "pubsub-js";
+import { useSelfStore } from "@/store/selfStore";
 
 export default {
     //处理最新的动态
@@ -29,10 +30,23 @@ export default {
     newchannelMessages(chatMsg){
         const chatHistory = useChatHistoryByUserId();
         chatMsg.timing = formatDate(chatMsg.timing);
-        chatHistory.addNewChatByServe(chatMsg);
-        PubSub.publish(`chat${chatMsg.dynamic_id}LastMsg`,{
-            text_content:chatMsg.text_content,
-            timing:chatMsg.timing
-        });
+        chatHistory.addNewChatByServe(chatMsg.historyId,chatMsg);
+    },
+    //处理私信
+    privateMessage(chatMsg){
+        const chatHistory = useChatHistoryByUserId();
+        const chatUserList = useChatUserList();
+        chatMsg.timing = formatDate(chatMsg.timing);
+        const self = useSelfStore();
+        let fromId = chatMsg.senderId
+        if(chatMsg.senderId == self.getId()){
+            fromId = chatMsg.dynamic_id;
+        }else{
+            fromId = chatMsg.senderId;
+        }
+        //为这个私聊用户创建一条信息
+        chatUserList.addNewChatUser(fromId,chatMsg.historyId);
+        //添加信息
+        chatHistory.addNewChatByServe(chatMsg.historyId,chatMsg);
     }
 }

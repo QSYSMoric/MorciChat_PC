@@ -1,5 +1,5 @@
 <template>
-    <li @click="selectChatUser" :class="{chatActive:user.active}" class="chatUserItem">
+    <li @click="selectChatUser" :class="{chatActive:props.user.active,readed:chathistoty.getUnRead(props.user.lastContacttime,props.user.historyId)}" :data_noRead="chathistoty.getUnRead(props.user.lastContacttime,props.user.historyId)" class="chatUserItem">
         <div class="chatUserListAvatar">
             <img :src="listItemMsg.img" alt="头像" v-if="listItemMsg.img">
             <img src="@/assets/groupChat.png" alt="默认头像" v-else>
@@ -9,13 +9,14 @@
                 <span>
                     {{listItemMsg.name}}
                 </span>
-                <span>
-                    {{listItemMsg.lastMsgTiming}}
+                <span v-if="chathistoty.getLastHistory(props.user.historyId)">
+                    {{ chathistoty.getLastHistory(props.user.historyId).timing.monthDay }}
+                    {{ chathistoty.getLastHistory(props.user.historyId).timing.hourMinute }}
                 </span>
             </div>
             <div class="userChatLastMsg">
-                <p>
-                    {{listItemMsg.lastMsg}}
+                <p v-if="chathistoty.getLastHistory(props.user.historyId)">
+                    {{ chathistoty.getLastHistory(props.user.historyId).text_content }}
                 </p>
             </div>
         </div>
@@ -23,37 +24,25 @@
 </template>
 
 <script setup>
-    import { reactive, ref } from 'vue';
+    import { reactive } from 'vue';
     import { useUserInformation } from '@/store/userInformation';
-    import PubSub from 'pubsub-js';
+    import { useChatHistoryByUserId } from '@/store/chatHistoryByUserIdStore';
     const props = defineProps(['user',"select"]);
-    let user = ref(props.user);
-
+    const chathistoty = useChatHistoryByUserId();
     //记录用户点击了哪个id
     function selectChatUser(){
-        user.value.onActive();
-        props.select(user.value);
+        props.user.onActive();
+        props.select(props.user);
     }
     //当前list的信息设置
     const userInformation = useUserInformation();
     const listItemMsg = reactive({
         img:null,
         name:null,
-        lastMsg:"暂时没有新的消息",
-        lastMsgTiming:"2023",
+        lastMsg:chathistoty.getLastHistory(props.user.historyId)
     });
-
-    //获取最后一条信息
-    PubSub.subscribe(`chat${user.value.friendId}LastMsg`,(_,newChat)=>{
-        if(!newChat){
-            return;
-        }
-        listItemMsg.lastMsgTiming = `${newChat.timing.monthDay} ${newChat.timing.hourMinute}`;
-        listItemMsg.lastMsg = newChat.text_content;
-    });
-
     //获取当前用户信息
-    userInformation.getUserInfoById(user.value.friendId).then((data)=>{
+    userInformation.getUserInfoById(props.user.friendId).then((data)=>{
         listItemMsg.name = data.userName;
         listItemMsg.img = data.userProfile;
     }).catch((err)=>{
@@ -64,6 +53,7 @@
 <style>
     .chatUserItem{
         display: grid;
+        position: relative;
         grid-template-columns: 48px 1fr;
         width: 100%;
         padding: 15px;
@@ -103,5 +93,20 @@
     }
     .chatActive{
         background: #e4e5e6;
+    }
+    .readed::before{
+        content: attr(data_noRead);
+        position: absolute;
+        bottom: 12px;
+        right: 15px;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #fc3d38;
+        color: #fff;
+        font-size: 2px;
+        border-radius: 50%;
     }
 </style>

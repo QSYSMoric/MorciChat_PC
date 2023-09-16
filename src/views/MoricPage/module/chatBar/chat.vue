@@ -20,6 +20,7 @@
   import ChatRoom from './components/ChatRoom.vue';
   import { useChatUserList } from '@/store/chatFriendListSessionStore';
   import { reactive, watch } from 'vue';
+  import { useRoute } from 'vue-router';
   const userLists = useChatUserList();
 
   //用户选中的聊天对象
@@ -27,8 +28,28 @@
     oldSelect:null,
     newSelect:userLists.getChatUserList[0]
   });
-  //默认选中第一个
-  selectUser.newSelect.onActive();
+  //初始化
+  if(selectUser.newSelect){
+    selectUser.newSelect.onActive();
+  }
+  //页面刷新时订阅好友列表的第一个人
+  PubSub.subscribe("chatSelectFrist",(_,defaultChatUser)=>{
+    defaultChatUser.onActive();
+    selectUser.newSelect = defaultChatUser;
+  });
+  //接收最新的用户并且显示它的历史聊天记录
+  const route = useRoute();
+  // console.log( userLists.getChatUserList[route.query.tempUser])
+  // selectUser.newSelect = userLists.getChatUserList[route.query.tempUser];
+  watch(()=>{
+    return route.query.tempUser;
+  },()=>{
+    if(userLists.getChatUserList[route.query.tempUser]){
+      selectUser.newSelect = userLists.getChatUserList[route.query.tempUser];
+      userLists.getChatUserList[route.query.tempUser].onActive();
+    }
+  });
+
   //切换选中目标
   function select(Chatuser){
     selectUser.newSelect = Chatuser;

@@ -110,7 +110,6 @@
   //当前评论信息
   const props = defineProps(['momentsObj']);
   const moment = props.momentsObj;
-  console.log(moment);
   const userMsg = reactive({
     avater:"",
     userName:"",

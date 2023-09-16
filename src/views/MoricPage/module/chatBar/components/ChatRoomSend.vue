@@ -31,9 +31,10 @@
     import { ref,reactive, watch } from "vue";
     import Moric_ChatMsg from "@/class/Moric_ChatMsg";
     import SocketModule from "@/utils/socketIO";
+    import { useChatHistoryByUserId } from "@/store/chatHistoryByUserIdStore";
     //当前发送对象
-    let props = defineProps(["chatId"]);
-    
+    let props = defineProps(["chatId","historyId"]);
+
     //控制输入内容自动增长
     const textareaNode = ref(null);
     //绑定输入内容
@@ -50,8 +51,8 @@
     //提交按钮
     function submitToChat(){
         //构建发送对象
-        let chatMsg = new Moric_ChatMsg(null,null,inputText.value,null,props.chatId);
-        SocketModule.sendMessage(chatMsg);
+        let chatMsg = new Moric_ChatMsg(null,null,inputText.value,null,props.chatId,props.historyId);
+        SocketModule.sendMessage(props.chatId,chatMsg);
     }
 </script>
 

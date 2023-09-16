@@ -16,7 +16,7 @@
                 </h2>
             </div>
             <div class="userTool">
-                <div  class="button" style="background-color: #fc3159;"> 私信</div>
+                <div @click.stop="privateLetter" class="button" style="background-color: #fc3159;"> 私信</div>
                 <div @click.stop="addFriend" class="button" style="background-color: #595ad3;" ref="temp"> 添加好友</div>
             </div>
             <div class="exit" @click.stop="exit">
@@ -31,11 +31,16 @@
 
 <script setup>
     import { useUserInformation } from '@/store/userInformation';
+    import { useChatUserList } from '@/store/chatFriendListSessionStore';
     import { reactive, ref } from 'vue';
+    import { useSelfStore } from '@/store/selfStore';
+    import sortAndJoin from '@/utils/sortAndJoin';
+    import router from "@/routers/index";
+    import Prompt from '../GlobalPrompt';
     const userInformation = useUserInformation();
     let props = defineProps(["destroyFn","userId"]);
+    const chatUserList = useChatUserList();
     //用户信息
-
     // 获取元素在视口中的位置信息
     //添加好友
     //页面动画元素
@@ -47,12 +52,13 @@
             clearTimeout(goMove);
         }, 1000);
     }
-
+    //页面信息
     let user = reactive({
         userName:"",
         avator:"",
         email:""
-    })
+    });
+    //获取页面信息
     userInformation.getUserInfoById(props.userId).then((data)=>{
         user.userName = data.userName;
         user.avator = data.userProfile;
@@ -63,6 +69,22 @@
     //退出
     function exit(){
         props.destroyFn();
+    }
+    //私信功能
+    function privateLetter(){
+        if(!props.userId){
+            Prompt("未知错误",false);
+            return;
+        }
+        let selfStore = useSelfStore();
+        let tempUser = chatUserList.addNewChatUser(props.userId,sortAndJoin(selfStore.getId(),props.userId));
+        router.replace({
+            path:"/Page/chatBar",
+            name:"chatBar",
+            query:{
+                tempUser
+            }
+        });
     }
 </script>
 

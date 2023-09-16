@@ -4,8 +4,8 @@
             <span> {{ chatUser.roomName }}</span>
             <span></span>
         </div>
-        <ChatRoomHistory :chatId="chatUser.chatId"></ChatRoomHistory>
-        <ChatRoomSend :chatId="chatUser.chatId"></ChatRoomSend>
+        <ChatRoomHistory :historyId="chatUser.historyId"></ChatRoomHistory>
+        <ChatRoomSend :chatId="chatUser.chatId" :historyId="chatUser.historyId"></ChatRoomSend>
     </div>
 </template>
 
@@ -19,25 +19,36 @@
     const props = defineProps(["chatToUser"]);
     const chatUser = reactive({
         roomName:"",
-        chatId:props.chatToUser.friendId,
+        chatId:"",
+        historyId:"",
     });
+
     //初始化房间信息
-    userInformation.getUserInfoById(chatUser.chatId).then((data)=>{
-        chatUser.roomName = data.userName
-    }).catch((err)=>{
-        console.log(err);
-    });
-    //监听对象id更新聊天历史
-    watch(()=>{
-        return props.chatToUser;
-    },(newValue)=>{
-        chatUser.chatId = newValue.friendId;
-        //更改房间信息
-        userInformation.getUserInfoById(newValue.friendId).then((data)=>{
+    if(props.chatToUser){
+        chatUser.historyId = props.chatToUser.historyId;
+        chatUser.chatId = props.chatToUser.friendId;
+        userInformation.getUserInfoById(props.chatToUser.friendId).then((data)=>{
             chatUser.roomName = data.userName
         }).catch((err)=>{
             console.log(err);
         });
+    }
+    //监听对象id更新聊天历史
+    watch(()=>{
+        return props.chatToUser;
+    },(newValue)=>{
+        if(newValue){
+            chatUser.historyId = newValue.historyId;
+            chatUser.chatId = newValue.friendId
+            //更改房间信息
+            userInformation.getUserInfoById(newValue.friendId).then((data)=>{
+                chatUser.roomName = data.userName
+            }).catch((err)=>{
+                console.log(err);
+            });
+        }
+    },{
+        deep:true
     });
 </script>
 

@@ -1,11 +1,17 @@
+import day from '@/utils/day';
+
 export default class Moric_ChatUser{
-    constructor(id ,historyId = null,remark = null,friendStatus = null){
+    constructor(id,friendStatus='pending',historyId = null,remark = null,lastContacttime = day.getFullDateTime()){
+        this.friendId = id;
         this.active = false;
         this.remark = remark;
         this.friendStatus = friendStatus;
-        this.friendId = id;
         this.historyId = historyId;
-        this.lastMsg = null;
+        this.lastContacttime = lastContacttime;
+        this.lastMsg = {
+            timing:"",
+            text_content:"",
+        };
     }
     onActive(){
         this.active = true;
