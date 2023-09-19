@@ -33,8 +33,8 @@
     import SocketModule from "@/utils/socketIO";
     import { useChatHistoryByUserId } from "@/store/chatHistoryByUserIdStore";
     //当前发送对象
-    let props = defineProps(["chatId","historyId"]);
-
+    let props = defineProps(["chatObj"]);
+    const chathistoty = useChatHistoryByUserId();
     //控制输入内容自动增长
     const textareaNode = ref(null);
     //绑定输入内容
@@ -43,16 +43,20 @@
     });
     //监听发送对象是否发生改变
     watch(()=>{
-        return props.chatId;
+        return props.chatObj;
     },()=>{
         //当发送对象发送改变后清除所有待发送内容
         inputText.value = "";
+    },{
+        deep:true
     });
     //提交按钮
     function submitToChat(){
+        //更新聊天记录
+        chathistoty.updateLastContactTime(props.chatObj);
         //构建发送对象
-        let chatMsg = new Moric_ChatMsg(null,null,inputText.value,null,props.chatId,props.historyId);
-        SocketModule.sendMessage(props.chatId,chatMsg);
+        let chatMsg = new Moric_ChatMsg(null,null,inputText.value,null,props.chatObj.friendId,props.chatObj.historyId);
+        SocketModule.sendMessage(props.chatObj.friendId,chatMsg);
     }
 </script>
 

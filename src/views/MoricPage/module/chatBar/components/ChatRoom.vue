@@ -4,8 +4,8 @@
             <span> {{ chatUser.roomName }}</span>
             <span></span>
         </div>
-        <ChatRoomHistory :historyId="chatUser.historyId"></ChatRoomHistory>
-        <ChatRoomSend :chatId="chatUser.chatId" :historyId="chatUser.historyId"></ChatRoomSend>
+        <ChatRoomHistory v-if="props.chatToUser" :historyId="props.chatToUser.historyId"></ChatRoomHistory>
+        <ChatRoomSend v-if="props.chatToUser" :chatObj="props.chatToUser"></ChatRoomSend>
     </div>
 </template>
 
@@ -19,14 +19,10 @@
     const props = defineProps(["chatToUser"]);
     const chatUser = reactive({
         roomName:"",
-        chatId:"",
-        historyId:"",
     });
 
     //初始化房间信息
     if(props.chatToUser){
-        chatUser.historyId = props.chatToUser.historyId;
-        chatUser.chatId = props.chatToUser.friendId;
         userInformation.getUserInfoById(props.chatToUser.friendId).then((data)=>{
             chatUser.roomName = data.userName
         }).catch((err)=>{
@@ -38,8 +34,6 @@
         return props.chatToUser;
     },(newValue)=>{
         if(newValue){
-            chatUser.historyId = newValue.historyId;
-            chatUser.chatId = newValue.friendId
             //更改房间信息
             userInformation.getUserInfoById(newValue.friendId).then((data)=>{
                 chatUser.roomName = data.userName

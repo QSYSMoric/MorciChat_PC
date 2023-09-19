@@ -29,6 +29,8 @@ const SocketModule = {
         this.socket.on("groupChatMessages",socketCommunicationProcessingControllers.newchannelMessages);
         //接收私信
         this.socket.on("privateMessage",socketCommunicationProcessingControllers.privateMessage);
+        //接收好友请求
+        this.socket.on("friendApplication",socketCommunicationProcessingControllers.addNewFiendToServe)
     },
     //发送消息
     sendMessage(chatId,chatMsg){
@@ -37,6 +39,19 @@ const SocketModule = {
         }else{
             this.socket.emit("privateMessage",chatMsg);
         }
+    },
+    //添加好友
+    addNewFiendToServe(friendId){
+        this.socket.emit("addNewFiendToServe",friendId);
+        return new Promise((resolve,reject)=>{
+            this.socket.once("addNewFiendToServe",(dataInfo)=>{
+                if(dataInfo.state){
+                    resolve(dataInfo);
+                }else{
+                    reject(dataInfo);
+                }
+            });
+        });
     },
     end(){
         //取消所有订阅

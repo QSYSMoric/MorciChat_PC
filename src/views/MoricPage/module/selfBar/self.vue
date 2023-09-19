@@ -7,10 +7,10 @@
 <script setup>
   import { onBeforeRouteLeave,useRoute } from 'vue-router';
   import PubSub from 'pubsub-js';
-  const route = useRoute();
-  PubSub.publish(`${route.name}on`);
-  onBeforeRouteLeave((to,from)=>{
-    PubSub.publish(`${from.name}off`)
+
+  PubSub.publish(`selfBaron`);
+  onBeforeRouteLeave(()=>{
+    PubSub.publish(`selfBaroff`)
   });
 </script>
 

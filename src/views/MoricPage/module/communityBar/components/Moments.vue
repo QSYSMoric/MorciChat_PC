@@ -3,7 +3,9 @@
       <div class="momentsLeft" @click.stop="ShowUser(moment.publisherId)">
         <div class="userAvatar">
           <img :src="userMsg.avater" alt="头像" v-if="userMsg.avater">
-          <img src="../../../../../assets/IMG_6803.jpg" alt="默认头像" v-else>
+          <div class="tempBox" 
+          :class="{LoadingAnimation:!userMsg.avater}"
+          v-else></div>
         </div>
       </div>
       <div class="momentsRight">

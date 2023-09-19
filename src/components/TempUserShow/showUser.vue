@@ -34,6 +34,7 @@
     import { useChatUserList } from '@/store/chatFriendListSessionStore';
     import { reactive, ref } from 'vue';
     import { useSelfStore } from '@/store/selfStore';
+    import socketIO from '@/utils/socketIO'
     import sortAndJoin from '@/utils/sortAndJoin';
     import router from "@/routers/index";
     import Prompt from '../GlobalPrompt';
@@ -45,12 +46,18 @@
     //添加好友
     //页面动画元素
     let go = ref(false);
+    //添加好友操作
     function addFriend(){
         go.value = true;
         let goMove = setTimeout(() => {
             go.value = false;
             clearTimeout(goMove);
         }, 1000);
+        socketIO.addNewFiendToServe(props.userId).then((data)=>{
+            console.log(data);
+        }).catch((err)=>{
+            console.log(err);
+        });
     }
     //页面信息
     let user = reactive({

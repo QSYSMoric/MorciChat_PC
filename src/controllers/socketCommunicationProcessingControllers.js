@@ -48,5 +48,9 @@ export default {
         chatUserList.addNewChatUser(fromId,chatMsg.historyId);
         //添加信息
         chatHistory.addNewChatByServe(chatMsg.historyId,chatMsg);
+    },
+    //处理好友请求
+    addNewFiendToServe(){
+        
     }
 }

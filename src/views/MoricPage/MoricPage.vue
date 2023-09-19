@@ -24,7 +24,9 @@
                 <div class="user">
                     <span class="icon">
                         <img :src="selfMsg.getProfileURL" v-if="selfMsg.getProfileURL" alt="用户头像">
-                        <img src="../../assets/IMG_6803.jpg" v-else alt="默认头像">
+                        <div class="tempBox" 
+                        :class="{LoadingAnimation:!selfMsg.getProfileURL}"
+                        v-else></div>
                     </span>
                     <span class="title" :class="{hide:isHided}">
                         {{selfMsg.selfName}}
@@ -168,7 +170,7 @@
         height: 100vh;
         padding: 30px;
         display: grid;
-        grid-template-columns: max-content 1fr 10%;
+        grid-template-columns: max-content minmax(200px,1fr) 15%;
         background: #f0eff5;
     }
     .sideBar{
@@ -322,6 +324,11 @@
         object-fit:cover;
         border-radius: 50%;
         object-position: center;
+    }
+    .tempBox{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
     }
     .black{
         margin-top: 10px;

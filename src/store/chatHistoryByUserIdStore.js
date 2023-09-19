@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import axios from "@/utils/api";
 import formatDate from "@/utils/formatDate";
 import PubSub from 'pubsub-js';
+import day from '@/utils/day';
 import isFirstTimeUpdated from "@/utils/isFirstTimeUpdated";
 
 export const useChatHistoryByUserId = defineStore("chatHistoryByUserId",{
@@ -44,6 +45,10 @@ export const useChatHistoryByUserId = defineStore("chatHistoryByUserId",{
                     let tempIndex = history.findIndex((element)=>{
                         return isFirstTimeUpdated(element.timing.now,compareTime.now);
                     });
+                    tempIndex = tempIndex < 0 ? 0:tempIndex;
+                    if(!tempIndex){
+                        return 0;
+                    }
                     return history.length - tempIndex;
                 }catch(err){
                     console.log(err.message);
@@ -92,5 +97,25 @@ export const useChatHistoryByUserId = defineStore("chatHistoryByUserId",{
             this.createTempHistory(joinID);
             this.chatHistory.get(joinID).push(chatMsg);
         },
+        updateLastContactTime(user){
+            //区分临时会话与好友私信
+            if(user.friendStatus === "confirmed"){
+                //更新与该用户联系的时间
+                axios({
+                    method: "post",
+                    url: "/moric/updateLastContactTime",
+                    data:{
+                        friendId:user.friendId
+                    }
+                }).then((data)=>{
+                    user.lastContacttime = data.body.lastContacttime;
+                }).catch((err)=>{
+                    user.lastContacttime = err.body.lastContacttime;
+                    console.log(err);
+                });
+            }else{
+                user.lastContacttime = day.nowTime();
+            }
+        }
     }
 });

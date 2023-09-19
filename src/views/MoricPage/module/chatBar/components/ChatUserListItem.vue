@@ -1,5 +1,11 @@
 <template>
-    <li @click="selectChatUser" :class="{chatActive:props.user.active,readed:chathistoty.getUnRead(props.user.lastContacttime,props.user.historyId)}" :data_noRead="chathistoty.getUnRead(props.user.lastContacttime,props.user.historyId)" class="chatUserItem">
+    <li @click="selectChatUser" 
+    :class="{
+        chatActive:props.user.active,
+        readed:chathistoty.getUnRead(props.user.lastContacttime,props.user.historyId)
+    }" 
+    :data_noRead="chathistoty.getUnRead(props.user.lastContacttime,props.user.historyId)" 
+    class="chatUserItem">
         <div class="chatUserListAvatar">
             <img :src="listItemMsg.img" alt="头像" v-if="listItemMsg.img">
             <img src="@/assets/groupChat.png" alt="默认头像" v-else>
@@ -33,6 +39,7 @@
     function selectChatUser(){
         props.user.onActive();
         props.select(props.user);
+        chathistoty.updateLastContactTime(props.user);
     }
     //当前list的信息设置
     const userInformation = useUserInformation();

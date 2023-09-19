@@ -1,17 +1,19 @@
 <template>
     <div class="commentUser" @click.stop="ShowUser(commentobj.user_id)">
         <img :src="commentUser.avatar" alt="头像" v-if="commentUser.avatar">
-        <img src="@/assets/self.png" alt="默认头像" v-else>
+        <div class="tempBox" 
+        :class="{LoadingAnimation:!commentUser.avatar}"
+        v-else></div>
     </div>
     <div class="commentUserMag">
-        <div class="commentUserName">
+        <div class="commentUserName" v-if="commentUser">
             {{commentUser.name}}
         </div>
-        <div class="commentTiming">
+        <div class="commentTiming" v-if="commentUser">
             {{commentUser.timing.monthDay}} 
             {{commentUser.timing.hourMinute}}
         </div>
-        <div class="commentUserData">
+        <div class="commentUserData" v-if="commentUser">
             {{commentUser.text_content}}
         </div>
     </div>

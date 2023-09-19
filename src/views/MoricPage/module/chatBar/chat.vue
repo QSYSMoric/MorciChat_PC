@@ -59,7 +59,9 @@
     return selectUser.newSelect
   },(newValue,oldValue)=>{
     if(oldValue){
-      oldValue.offActive();
+      if(newValue.friendId != oldValue.friendId){
+        oldValue.offActive();
+      }
     }
   },{
     deep:true
@@ -70,6 +72,11 @@
   onBeforeRouteLeave(()=>{
     PubSub.publish(`chatBaroff`);
   });
+
+  onBeforeRouteLeave(()=>{
+    PubSub.publish(`chatBaroff`);
+  });
+
 </script>
 
 <style>

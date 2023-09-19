@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import Moric_ChatUser from '@/class/Moric_ChatUser';
 import { useChatHistoryByUserId } from "@/store/chatHistoryByUserIdStore";
+import { useFriendListStore } from"@/store/friendListSessionStore";
 import axios from "@/utils/api";
 import PubSub from "pubsub-js";
 
@@ -25,13 +26,17 @@ export const useChatUserList = defineStore("chatUserList",{
                 if(!feedback.state){
                     throw new Error(feedback.alertMsg);
                 }
+                //获取聊天记录
                 const chatHistory = useChatHistoryByUserId();
+                //好友列表
+                const friendList = useFriendListStore();
                 feedback.body.forEach(element => {
                     chatHistory.createTempHistory(element.chatHistory);
                     let tempChatUser = new Moric_ChatUser(element.friendId,element.friendStatus,element.chatHistory,element.remark,element.lastContacttime);
                     //如果是好友那么就获取历史聊天记录
                     if(tempChatUser.friendStatus === "confirmed"){
                         chatHistory.getChatHistoryByIdToServe(tempChatUser.historyId);
+                        friendList.addNewFiend(tempChatUser.friendId);
                     }
                     //查询此时的聊天列表是否重复
                     const isObjectIncluded  = this.chatUserList.some((node)=>{

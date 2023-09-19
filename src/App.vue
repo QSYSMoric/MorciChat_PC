@@ -66,7 +66,7 @@ export default {
   }
   @font-face {
     font-family: "IOS";
-    src:url("@/assets/fonts/ios.ttf") format('truetype');
+    src:url("@/assets/fonts/iosOrg.otf") format('truetype');
   }
   button{
     outline: none;
@@ -122,4 +122,24 @@ export default {
         background-position-x: -20%;
     }
   }
+  .LoadingAnimation{
+        background: linear-gradient(110deg,
+        rgba(255,255,255, 0) 40%,
+        rgba(255,255,255,.5) 50%,
+        rgba(255,255,255,0) 60%) #d9d9d9;
+        background-size: 200% 100%;
+        background-position-x: 120%;
+        overflow: hidden;
+        animation: 1s loading ease-in-out infinite;
+    }
+    @keyframes loading{
+        to{
+            background-position-x: -20%;
+        }
+    }
+    .tempBox{
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
 </style>
