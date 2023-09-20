@@ -12,13 +12,13 @@
             <div class="useOperationItemToFriend">
                 <div class="pending" 
                 v-if="!(props.friendApplication.friendId == selfMsg.getSelf)">
-                    申请中 
+                   <p v-if="(props.friendApplication.status == `Approved`)">已通过 </p>
                 </div>
                 <div v-else class="operationButtonState">
-                    <div class="operationButton" style="background-color: #0e9d48;">
+                    <div class="operationButton" @click.stop="agreeWith" style="background-color: #0e9d48;">
                         
                     </div>
-                    <div class="operationButton" style="background-color: #fc3d38;">
+                    <div class="operationButton" @click.stop="refuse" style="background-color: #fc3d38;">
                         
                     </div>
                 </div>
@@ -31,24 +31,41 @@
     import { useUserInformation } from '@/store/userInformation';
     import { reactive, ref } from 'vue';
     import { useSelfStore } from '@/store/selfStore';
+    import Moric_FriendOperation from '@/class/Moric_FriendOperation'
+    import SocketModule from '@/utils/socketIO';
     const userInformation = useUserInformation();
     const selfMsg = useSelfStore();
     const props = defineProps(["friendApplication"]);
-
+    //页面信息
     const friendApplicationMsg = reactive({
         avatar:"",
         name:"",
-        state:props.friendApplication.status
     });
-
+    //比较来自谁的请求
     let toUser = props.friendApplication.friendId == selfMsg.getSelf?props.friendApplication.userId:props.friendApplication.friendId;
-
+    //获取用户信息
     userInformation.getUserInfoById(toUser).then((data)=>{
         friendApplicationMsg.name = data.userName;
         friendApplicationMsg.avatar = data.userProfile;
     }).catch((err)=>{
         console.log(err);
-    })
+    });
+    //同意好友请求
+    function agreeWith(){
+        SocketModule.operateFriendRequests(new Moric_FriendOperation(props.friendApplication.userId,props.friendApplication.friendId,"Approved")).then((data)=>{
+            console.log(data);
+        }).catch((err)=>{
+            console.log(err);
+        });
+    }
+    //拒绝好友请求
+    function refuse(){
+        SocketModule.operateFriendRequests(new Moric_FriendOperation(props.friendApplication.userId,props.friendApplication.friendId,"Rejected")).then((data)=>{
+            console.log(data);
+        }).catch((err)=>{
+            console.log(err);
+        });
+    }
 </script>
 
 <style>

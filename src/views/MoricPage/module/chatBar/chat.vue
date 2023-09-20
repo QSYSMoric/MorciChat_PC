@@ -34,7 +34,9 @@
   }
   //页面刷新时订阅好友列表的第一个人
   PubSub.subscribe("chatSelectFrist",(_,defaultChatUser)=>{
-    defaultChatUser.onActive();
+    if(defaultChatUser){
+      defaultChatUser.onActive();
+    }
     selectUser.newSelect = defaultChatUser;
   });
   //接收最新的用户并且显示它的历史聊天记录

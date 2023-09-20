@@ -20,7 +20,7 @@
     import SmallLoading from '@/components/SmallLoading';
     import PubSub from 'pubsub-js';
     import { reactive } from 'vue';
-import { onBeforeRouteLeave } from 'vue-router';
+    import { onBeforeRouteLeave } from 'vue-router';
 
     let userId = reactive({
         serachText:"",

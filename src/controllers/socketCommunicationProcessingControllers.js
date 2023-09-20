@@ -3,6 +3,7 @@ import { useMomentsStore } from "@/store/momentsSessionStore";
 import { useCommentStore } from "@/store/commentSessionStore";
 import { useChatHistoryByUserId } from "@/store/chatHistoryByUserIdStore";
 import { useChatUserList } from "@/store/chatFriendListSessionStore";
+import { useFriendListStore } from "@/store/friendListSessionStore";
 import formatDate from "@/utils/formatDate";
 import { useSelfStore } from "@/store/selfStore";
 
@@ -50,7 +51,13 @@ export default {
         chatHistory.addNewChatByServe(chatMsg.historyId,chatMsg);
     },
     //处理好友请求
-    addNewFiendToServe(){
-        
+    friendRequest(friendRequest){
+        const friendList = useFriendListStore();
+        friendList.addNewFriendRequest(friendRequest);
+    },
+    //通过好友验证后操作
+    friendsThrough(friendOperation){
+        const friendApplication = useFriendListStore();
+        friendApplication.updateFriendApplication(friendOperation);
     }
 }
