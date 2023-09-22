@@ -27,6 +27,7 @@ export default {
   ::before,
   ::after {
       font-family: 'icomoon','IOS';
+      --font-roboto: "Roboto", Arial, sans-serif;
       box-sizing: inherit;
   }
   :root{

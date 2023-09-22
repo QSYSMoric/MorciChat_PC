@@ -1,7 +1,8 @@
 <template>
     <li class="friendListItem">
         <div class="friendAvatar">
-            <div class="tempAvatar"></div>
+            <img v-if="friendItem.avatar" :src="friendItem.avatar" alt="">
+            <div v-else class="tempAvatar"></div>
         </div>
         <div class="friendRight">
             <div class="friendMsg">
@@ -14,7 +15,7 @@
                 </span>
             </div>
             <div class="chatToFriend">
-                <div class="chatButton">
+                <div class="chatButton" @click.stop="chagtPrivate">
                     
                 </div>
             </div>
@@ -25,8 +26,21 @@
 <script setup>
     import { useUserInformation } from '@/store/userInformation';
     import { reactive } from 'vue';
+    import { useRouter } from 'vue-router';
     const props = defineProps(["friend"]);
     const userInformation = useUserInformation();
+    const router = useRouter();    
+
+    //私信
+    function chagtPrivate(){
+        router.replace({
+            path:"/Page/chatBar",
+            name:"chatBar",
+            query:{
+                tempUser:props.friend
+            }
+        });
+    }
 
     const friendItem = reactive({
         name:"",
@@ -36,7 +50,7 @@
 
     userInformation.getUserInfoById(props.friend).then((data)=>{
         friendItem.name = data.userName;
-        friendItem.avatar = data.userProfileURL;
+        friendItem.avatar = data.userProfile;
         friendItem.signature = data.userSignature;
     }).catch((err)=>{
         console.log(err);

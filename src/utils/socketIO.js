@@ -35,11 +35,11 @@ const SocketModule = {
         this.socket.on("friendsThrough",socketCommunicationProcessingControllers.friendsThrough);
     },
     //发送消息
-    sendMessage(chatId,chatMsg){
+    sendMessage(chatId,chatMsg,friendStatus){
         if(chatId >= 90000){
             this.socket.emit("groupChatMessages",chatMsg);
         }else{
-            this.socket.emit("privateMessage",chatMsg);
+            this.socket.emit("privateMessage",chatMsg,friendStatus);
         }
     },
     //添加好友

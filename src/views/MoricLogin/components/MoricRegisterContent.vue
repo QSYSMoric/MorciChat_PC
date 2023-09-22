@@ -169,17 +169,17 @@
   
 <style scoped>
     .MoricLoginContent{
-          width: 65%;
-          min-width: 400px;
-          /* height: 70%; */
-          box-shadow: 2px 2px 15px rgb(230, 229, 235);
-          padding: 30px;
-          border-radius: 12px;
-          background: #ffff;
-          backdrop-filter:blur(10px);
-          display: grid;
-          grid-template-rows: max-content max-content 1fr;
-          transition: all .1s linear;
+        width: 65%;
+        min-width: 400px;
+        /* height: 70%; */
+        box-shadow: 2px 2px 15px rgb(230, 229, 235);
+        padding: 30px;
+        border-radius: 12px;
+        background: #ffff;
+        backdrop-filter:blur(10px);
+        display: grid;
+        grid-template-rows: max-content max-content 1fr;
+        transition: all .1s linear;
     }
     .MoricLoginContent h2{
           width: 100%;
@@ -425,14 +425,14 @@
         opacity: 0;
     }
     .loginOtherContentBottom{
-    cursor: pointer;
-    margin-top: 1em;
-    font-size: .6em;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    width: 100%;
-    height: 20pt;
+        cursor: pointer;
+        margin-top: 1em;
+        font-size: .6em;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        width: 100%;
+        height: 20pt;
     }
     .loginOtherContentBottom p{
         display: flex;

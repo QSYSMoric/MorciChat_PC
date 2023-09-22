@@ -62,7 +62,7 @@
             props.ladingSearchOff();
         }).catch((err)=>{
             console.log(err);
-            Prompt("查无此人",false);
+            Prompt("查无此人",false,1000,props.ladingSearchOff);
         });
     });
     //私信按钮

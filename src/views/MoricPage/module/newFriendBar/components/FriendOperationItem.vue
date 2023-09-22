@@ -11,8 +11,9 @@
             </div>
             <div class="useOperationItemToFriend">
                 <div class="pending" 
-                v-if="!(props.friendApplication.friendId == selfMsg.getSelf)">
+                v-if="!(props.friendApplication.friendId == selfMsg.getSelf && props.friendApplication.status != `Approved`)">
                    <p v-if="(props.friendApplication.status == `Approved`)">已通过 </p>
+                   <p v-if="(props.friendApplication.status == `Pending`)">申请中 </p>
                 </div>
                 <div v-else class="operationButtonState">
                     <div class="operationButton" @click.stop="agreeWith" style="background-color: #0e9d48;">
@@ -29,18 +30,22 @@
 
 <script setup>
     import { useUserInformation } from '@/store/userInformation';
-    import { reactive, ref } from 'vue';
+    import { reactive } from 'vue';
     import { useSelfStore } from '@/store/selfStore';
+    import { useFriendListStore } from '@/store/friendListSessionStore';
     import Moric_FriendOperation from '@/class/Moric_FriendOperation'
     import SocketModule from '@/utils/socketIO';
+    import Prompt from '@/components/GlobalPrompt';
     const userInformation = useUserInformation();
     const selfMsg = useSelfStore();
+    const friendListStore = useFriendListStore();
     const props = defineProps(["friendApplication"]);
     //页面信息
     const friendApplicationMsg = reactive({
         avatar:"",
         name:"",
     });
+    console.log(props.friendApplication.status);
     //比较来自谁的请求
     let toUser = props.friendApplication.friendId == selfMsg.getSelf?props.friendApplication.userId:props.friendApplication.friendId;
     //获取用户信息
@@ -53,17 +58,18 @@
     //同意好友请求
     function agreeWith(){
         SocketModule.operateFriendRequests(new Moric_FriendOperation(props.friendApplication.userId,props.friendApplication.friendId,"Approved")).then((data)=>{
-            console.log(data);
+            Prompt("成功",true);
         }).catch((err)=>{
-            console.log(err);
+            Prompt(err.alertMsg,false);
+            friendListStore.updatingFriendApplicationStatus(props.friendApplication.userId,props.friendApplication.friendId,"Approved");
         });
     }
     //拒绝好友请求
     function refuse(){
         SocketModule.operateFriendRequests(new Moric_FriendOperation(props.friendApplication.userId,props.friendApplication.friendId,"Rejected")).then((data)=>{
-            console.log(data);
+            Prompt("成功",true);
         }).catch((err)=>{
-            console.log(err);
+            Prompt(`未知错误:${err.alertMsg}`,true);
         });
     }
 </script>
@@ -74,9 +80,13 @@
         grid-template-columns: 45px 1fr;
         width: 100%;
         padding: 10px 15px;
+        background: #ffff;
+        border-radius: 12px;
+        transition:all .2s linear;
     }
     .useOperationItem:hover{
         background: #c8c7cd;
+        /* transform: scale(1.1); */
     }
     .useOperationItemAvatar{
         width: 35px;

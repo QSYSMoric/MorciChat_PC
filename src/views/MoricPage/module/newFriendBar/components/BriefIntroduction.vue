@@ -34,7 +34,7 @@
         let searchAn = setTimeout(() => {
             userId.state = false;
             clearTimeout(searchAn);               
-        }, 500);
+        }, 400);
     }
 
     onBeforeRouteLeave(()=>{
@@ -96,7 +96,7 @@
         /* background: #157efb; */
         font-size: 18px;
         color: var(--background);
-        background: #d2d1d7;
+        background: #ffff;
         font-weight: 600;
         user-select: none;
         transition: transform .2s linear;

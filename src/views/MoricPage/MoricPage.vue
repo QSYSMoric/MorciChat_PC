@@ -171,7 +171,7 @@
         padding: 30px;
         display: grid;
         grid-template-columns: max-content minmax(200px,1fr) 15%;
-        background: #f0eff5;
+        background: #e9e8ec;
     }
     .sideBar{
         width: 3rem;
@@ -349,7 +349,7 @@
     }
     .active{
         position: relative;
-        background: #f0eff5;
+        background: #e9e8ec;
         border-radius: 50px 0 0 50px;
     }
     .active::before{
@@ -361,7 +361,7 @@
         height: 20px;
         border-bottom-right-radius: 10px;
         background: transparent;
-        box-shadow: 5px 1px 0px 1px #f0eff5;
+        box-shadow: 5px 1px 0px 1px #e9e8ec;
     }
     .active::after{
         content: "";

@@ -61,17 +61,27 @@ export const useFriendListStore = defineStore("friendList",{
         },
         //好友请求通过后
         updateFriendApplication(friendOperation){
-            console.log(friendOperation);
             //查询此时的好友列表是否重复
             const isObjectIncluded  = this.friendApplication.find((element)=>{
                 return element.userId == friendOperation.userId && element.friendId == friendOperation.friendId;
             });
-            console.log(isObjectIncluded)
             if(isObjectIncluded){
                 isObjectIncluded.status = friendOperation.status;
             }else{
                 this.addNewFriendRequest(friendOperation);
             }
+        },
+        //更新列表中某个好友的状态
+        updatingFriendApplicationStatus(userId,friendId,states){
+            if(!userId || !friendId || !states){
+                console.log("参数为空");
+                return;
+            }
+            //查询此时的好友列表是否重复
+            const isObjectIncluded  = this.friendApplication.find((element)=>{
+                return element.userId == userId && friendId;
+            });
+            isObjectIncluded.status = states;
         }
     }
 });

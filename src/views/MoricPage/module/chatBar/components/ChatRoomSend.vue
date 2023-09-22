@@ -56,7 +56,7 @@
         chathistoty.updateLastContactTime(props.chatObj);
         //构建发送对象
         let chatMsg = new Moric_ChatMsg(null,null,inputText.value,null,props.chatObj.friendId,props.chatObj.historyId);
-        SocketModule.sendMessage(props.chatObj.friendId,chatMsg);
+        SocketModule.sendMessage(props.chatObj.friendId,chatMsg,props.chatObj.friendStatus);
     }
 </script>
 

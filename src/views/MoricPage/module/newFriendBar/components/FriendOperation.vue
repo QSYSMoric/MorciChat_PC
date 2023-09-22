@@ -30,18 +30,22 @@
     .useOperationTitle{
         width: 100%;
         font-size: 18px;
-        background: #ffff;
+        /* background: #ffff; */
+        /* font-family: var(--font-roboto); */
+        letter-spacing: 1px;
+        font-weight: 600;
         padding: 8px 15px;
         border-radius: 8px;
     }
     .useOperationTitle > i{
         font-style: normal;
         font-weight: 600;
+        font-size: 21px;
     }
     .useOperationList{
         width: 100%;
         height: 100%;
-        background: #ffff;
+        /* background: #ffff; */
         border-radius: 8px;
         overflow: auto;
     }
