@@ -57,6 +57,10 @@ export const useUserInformation = defineStore('userInformation',{
                 console.log(error.message);
                 return Promise.reject(error.message);
             }
+        },
+        clear(){
+            this.userInformationList.clear();
+            this.userInfoRequestCollective.clear();
         }
     }
 });

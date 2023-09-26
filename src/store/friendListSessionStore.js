@@ -17,6 +17,10 @@ export const useFriendListStore = defineStore("friendList",{
         //获取好友请求列表
         getFriendApplicationList(state){
             return state.friendApplication;
+        },
+        //获取好友数量
+        getFriendLength(state){
+            return state.friendList.length;
         }
     },
     actions:{
@@ -82,6 +86,10 @@ export const useFriendListStore = defineStore("friendList",{
                 return element.userId == userId && friendId;
             });
             isObjectIncluded.status = states;
+        },
+        clear(){
+            this.friendList.length = 0;
+            this.friendApplication.length = 0
         }
     }
 });

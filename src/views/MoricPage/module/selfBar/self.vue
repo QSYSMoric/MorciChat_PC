@@ -2,7 +2,7 @@
   <div class="personalInformation">
     <div class="personCard">
       <div class="personAvatar">
-          <img v-if="editPersonInfoButton" src="../../../../assets/IMG_6803.jpg" alt="">
+          <img v-if="editPersonInfoButton" :src="mySelf.selfProfileURL" alt="">
           <div v-else class="inputheadSculpture">
               <input type="file" title="headSculpture" 
               @change="handleFileUpload"
@@ -11,29 +11,35 @@
           <div class="personAvatorTool">
             
           </div>
-          <h1 v-if="editPersonInfoButton">用户</h1>
-          <input v-else class="editMsg editName" type="text" placeholder="姓名">
+          <h1 v-if="editPersonInfoButton">{{mySelf.selfName}}</h1>
+          <input v-else class="editMsg editName" v-model="selfMsg.userName" type="text" placeholder="姓名">
       </div>
       <ul class="personInfoConetnetList">
         <li>
           <span class="icon">年龄 :</span>
-          <span v-if="editPersonInfoButton" class="text">21</span>
-          <input v-else class="editMsg" type="text" placeholder="年龄">
+          <span v-if="editPersonInfoButton" class="text">
+            <p v-if="!mySelf.selfAge">未填写</p>
+            <p v-else>{{mySelf.selfAge}}</p>
+          </span>
+          <input v-else class="editMsg" v-model="selfMsg.userAge" type="text" placeholder="年龄">
         </li>
         <li>
           <span class="icon">性别 :</span>
-          <span v-if="editPersonInfoButton" class="text">男</span>
+          <span v-if="editPersonInfoButton" class="text">这个功能还没做</span>
           <input v-else class="editMsg" type="text" placeholder="性别">
         </li>
         <li>
           <span class="icon">邮箱 :</span>
-          <span v-if="editPersonInfoButton" class="text">183957330@qq.com</span>
-          <input v-else class="editMsg" type="text" placeholder="邮箱">
+          <span v-if="editPersonInfoButton" class="text">{{mySelf.selfEmail}}</span>
+          <input v-else class="editMsg" v-model="selfMsg.userEmail" type="text" placeholder="邮箱">
         </li>
         <li>
           <span class="icon">签名 :</span>
-          <span v-if="editPersonInfoButton" class="text">这个人很懒</span>
-          <input v-else class="editMsg" type="text" placeholder="签名">
+          <span v-if="editPersonInfoButton" class="text">
+            <p v-if="!mySelf.selfSignature">这个人什么都没写</p>
+            <p v-else>{{mySelf.selfSignature}}</p>
+          </span>
+          <input v-else class="editMsg" v-model="selfMsg.userSignature" type="text" placeholder="签名">
         </li>
       </ul>
       <div class="editPersonInfoButton">
@@ -45,27 +51,72 @@
         </button>
       </div>
     </div>
-    <div>
-      
-    </div>
+    <myWorkArea/>
   </div>
 </template>
 
 <script setup>
   import { onBeforeRouteLeave } from 'vue-router';
+  import axios from '@/utils/api';
+  import myWorkArea from './myWorkArea.vue';
   import PubSub from 'pubsub-js';
-  import { ref } from 'vue';
+  import { reactive, ref } from 'vue';
+  import Prompt from '@/components/GlobalPrompt';
+  import { useSelfStore } from '@/store/selfStore';
   //切换模式
   let editPersonInfoButton = ref(true);
-
+  //个人信息
+  let mySelf = useSelfStore();
+  //头像处理
+  let selfMsg = reactive({
+    userProfile:"",
+    userProfileType:"",
+    userName:"",
+    userAge:"",
+    userEmail:"",
+    userSignature:""
+  });
   //上传头像
   function handleFileUpload(event){
-    
+      //获取到上传的头像
+      let files = event.target.files[0];
+      //创建读取文件读取对象
+      let reader = new FileReader();
+      //判断文件类型
+      if(/image/.test(files.type)){
+          reader.readAsDataURL(files);
+          selfMsg.userProfileType = "jpg";
+      }else if(/png/.test(files.type)){
+          reader.readAsDataURL(files);
+          selfMsg.userProfileType = "png";
+      }else if(/jpg/.test(files.type)){
+          reader.readAsDataURL(files);
+          selfMsg.userProfileType = "jpg";
+      }else{
+          reader.readAsText(files);
+          selfMsg.userProfileType = "test";
+      };
+      //当文件加载完毕后调用这个函数
+      reader.onload = () => {
+        selfMsg.userProfile = reader.result;
+        Prompt("头像上传成功",true);
+      }
   }
 
   //保存按钮
   function save(){
     editPersonInfoButton.value = true;
+    axios({
+      method:"post",
+      url:"/moric/changePersonalInformation",
+      data:{
+        selfMsg
+      }
+    }).then((data)=>{
+      console.log(data);
+    }).catch((err)=>{
+      console.log(err);
+    })
   }
   //编辑按钮
   function edit(){
@@ -93,7 +144,7 @@
     height: 100%;
     padding: 0 15px;
     display: grid;
-    grid-template-columns: 320px 1fr;
+    grid-template-columns: 350px 1fr;
   }
   .personCard{
     position: relative;

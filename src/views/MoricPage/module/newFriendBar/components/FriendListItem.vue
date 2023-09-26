@@ -74,6 +74,9 @@
         border-radius: 50%;
         overflow: hidden;
     }
+    .friendAvatar img{
+        object-fit: cover;
+    }
     .tempAvatar{
         font-size: 24px;
         width: 100%;

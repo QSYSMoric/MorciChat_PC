@@ -63,6 +63,8 @@
     import SocketModule from "@/utils/socketIO";
     import { useMomentsStore } from '@/store/momentsSessionStore';
     import { useCommentStore } from "@/store/commentSessionStore";
+    import { useFriendListStore } from '@/store/friendListSessionStore';
+    import { useChatHistoryByUserId } from '@/store/chatHistoryByUserIdStore';
     import additionalOperations from './scripts/additionalOperations';
     import NavigationBarObj from '@/views/MoricPage/scripts/NavigationBarObj';
     //初始化socket.io通道
@@ -99,7 +101,7 @@
         path:"/Page/settingBar",
         name:"settingBar"
     },"settingBar"));
-    const navigationBars = reactive([communityBar,chatBar,selfBar,newFriendBar,aboutBar,settingBar]);
+    const navigationBars = reactive([communityBar,chatBar,selfBar,newFriendBar,aboutBar]);
     navigationBars.forEach((node)=>{
         //为每个导航对象安装回调事件
         PubSub.subscribe(`${node.subscribleName}on`,(_)=>{
@@ -120,6 +122,7 @@
     //请求个人信息资源
     const selfMsg = useSelfStore();
     const getUserMsg = getUserInformation();
+    selfMsg.requestMoments();
     //获取数据后的操作处理程序
     getUserMsg.catch((err)=>{
         Prompt(err.alertMsg,false,1000);
@@ -142,6 +145,9 @@
         moments.clearExit();
         comments.clearExit();
         SocketModule.end();
+        useFriendListStore().clear();
+        selfMsg.clear();
+        useChatHistoryByUserId().clear();
         // 重置整个状态树
         window.localStorage.clear();
         router.replace({

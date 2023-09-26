@@ -116,6 +116,9 @@ export const useChatHistoryByUserId = defineStore("chatHistoryByUserId",{
             }else{
                 user.lastContacttime = day.nowTime();
             }
+        },
+        clear(){
+            this.chatHistory.clear();
         }
     }
 });

@@ -1,4 +1,8 @@
 import { defineStore } from 'pinia';
+import axios from '@/utils/api';
+import Moric_Moments from '@/class/Moric_Moments';
+import imageToUrl from '@/utils/ImageToURL';
+import formatDate from "@/utils/formatDate";
 //存储用户信息的介质
 export const useSelfStore = defineStore('mySelf', {
     state:()=>({
@@ -8,6 +12,8 @@ export const useSelfStore = defineStore('mySelf', {
         selfAge:null,
         selfSignature:null,
         selfEmail:null,
+        userCreateAt:null,
+        myMoments:[]
     }),
     getters:{
         getName:(state)=>{
@@ -18,19 +24,49 @@ export const useSelfStore = defineStore('mySelf', {
         },
         getProfileURL:(state)=>{
             return state.selfProfileURL;
-        }
+        },
     },
     actions:{
-        setSelf(selfId,selfName,selfProfileURL,selfAge,selfSignature,selfEmail){
+        setSelf(selfId,selfName,selfProfileURL,selfAge,selfSignature,selfEmail,userCreateAt){
             this.selfId = selfId;
             this.selfName = selfName;
             this.selfProfileURL = selfProfileURL;
             this.selfAge = selfAge;
             this.selfSignature = selfSignature;
             this.selfEmail = selfEmail;
+            this.userCreateAt = userCreateAt;
+        },
+        addMyMoments(moment){
+            this.myMoments.push(moment)
         },
         getId(){
             return this.selfId;
+        },
+        async requestMoments(){
+            try {
+                let feedback = await axios({
+                    method: "post",
+                    url: "/moric/getMomentsMy",
+                    data:{
+                        timing:null
+                    }
+                });
+                feedback.body.forEach((element)=>{
+                    let timing = formatDate(element.publicTiming);
+                    element.publicTiming = timing;
+                    if(element.friendCirclePictures && element.friendCirclePictures.length){
+                        element.friendCirclePictures.forEach((node,index)=>{
+                            element.friendCirclePictures[index] = imageToUrl(node);
+                        });
+                    }
+                    this.addMyMoments(new Moric_Moments(element.publishId,element.publisher,element.publicTiming,element.friendCircleCopy,element.friendCirclePictures,element.commentInformation));
+                });
+            }catch(error){
+                return Promise.reject(error.message);       
+            }
+        },
+        clear(){
+            this.myMoments.length = 0;
         }
     }
 });

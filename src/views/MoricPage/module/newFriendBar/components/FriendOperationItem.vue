@@ -74,7 +74,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     .useOperationItem{
         display: grid;
         grid-template-columns: 45px 1fr;
@@ -83,6 +83,9 @@
         background: #ffff;
         border-radius: 12px;
         transition:all .2s linear;
+    }
+    li + li{
+        margin-top: 10px;
     }
     .useOperationItem:hover{
         background: #c8c7cd;

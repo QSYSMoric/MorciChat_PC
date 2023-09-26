@@ -13,7 +13,8 @@ export const useChatUserList = defineStore("chatUserList",{
     getters:{
         getChatUserList(state){
             return state.chatUserList;
-        }
+        },
+    
     },
     actions:{
         //获取好友列表
