@@ -42,6 +42,14 @@ export const useSelfStore = defineStore('mySelf', {
         getId(){
             return this.selfId;
         },
+        updatedMsg(selMsg) {
+            const { userName, userProfile, userAge, userSignature, userEmail } = selMsg;
+            this.selfName = userName || this.selfName;
+            this.selfProfileURL = userProfile || this.selfProfileURL;
+            this.selfAge = userAge || this.selfAge;
+            this.selfSignature = userSignature || this.selfSignature;
+            this.selfEmail = userEmail || this.selfEmail;
+        },
         async requestMoments(){
             try {
                 let feedback = await axios({

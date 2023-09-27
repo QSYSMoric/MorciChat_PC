@@ -83,8 +83,6 @@
     const userId = reactive(new InputField());
     const password = reactive(new InputField());
     const router = useRouter();
-    userId.data = "183957332@qq.com";
-    password.data = "272919";
     //注册页面跳转
     const registerOnclick = function(){
         router.replace({

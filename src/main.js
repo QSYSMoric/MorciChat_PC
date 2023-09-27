@@ -6,6 +6,9 @@ import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import animateLodingList from './directives/animateLodingList';
 import animateDirective from './directives/animateDirective';
+//导入代码高亮样式
+import 'highlight.js/styles/monokai-sublime.css';
+import 'highlight.js/lib/common';
 // 引入animate.css
 import 'animate.css';
 //全局组件

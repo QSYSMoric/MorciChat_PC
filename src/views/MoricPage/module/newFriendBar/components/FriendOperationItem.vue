@@ -13,7 +13,8 @@
                 <div class="pending" 
                 v-if="!(props.friendApplication.friendId == selfMsg.getSelf && props.friendApplication.status != `Approved`)">
                    <p v-if="(props.friendApplication.status == `Approved`)">已通过 </p>
-                   <p v-if="(props.friendApplication.status == `Pending`)">申请中 </p>
+                   <p v-if="(props.friendApplication.status == `Pending`)">申请中...</p>
+                   <p v-if="(props.friendApplication.status == `Rejected`)">已拒绝 X</p>
                 </div>
                 <div v-else class="operationButtonState">
                     <div class="operationButton" @click.stop="agreeWith" style="background-color: #0e9d48;">
@@ -45,7 +46,6 @@
         avatar:"",
         name:"",
     });
-    console.log(props.friendApplication.status);
     //比较来自谁的请求
     let toUser = props.friendApplication.friendId == selfMsg.getSelf?props.friendApplication.userId:props.friendApplication.friendId;
     //获取用户信息
@@ -58,7 +58,7 @@
     //同意好友请求
     function agreeWith(){
         SocketModule.operateFriendRequests(new Moric_FriendOperation(props.friendApplication.userId,props.friendApplication.friendId,"Approved")).then((data)=>{
-            Prompt("成功",true);
+            Prompt("已同意好友申请",true);
         }).catch((err)=>{
             Prompt(err.alertMsg,false);
             friendListStore.updatingFriendApplicationStatus(props.friendApplication.userId,props.friendApplication.friendId,"Approved");
@@ -67,10 +67,12 @@
     //拒绝好友请求
     function refuse(){
         SocketModule.operateFriendRequests(new Moric_FriendOperation(props.friendApplication.userId,props.friendApplication.friendId,"Rejected")).then((data)=>{
-            Prompt("成功",true);
+            Prompt("已拒绝好友申请",true);
         }).catch((err)=>{
             Prompt(`未知错误:${err.alertMsg}`,true);
-        });
+        }).finally(()=>{
+            friendListStore.updatingFriendApplicationStatus(props.friendApplication.userId,props.friendApplication.friendId,"Rejected");
+        })
     }
 </script>
 

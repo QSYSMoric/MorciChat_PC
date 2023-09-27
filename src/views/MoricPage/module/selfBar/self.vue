@@ -2,12 +2,16 @@
   <div class="personalInformation">
     <div class="personCard">
       <div class="personAvatar">
-          <img v-if="editPersonInfoButton" :src="mySelf.selfProfileURL" alt="">
-          <div v-else class="inputheadSculpture">
+          <img v-if="editPersonInfoButton && mySelf.selfProfileURL" :src="mySelf.selfProfileURL" alt="">
+          <div v-if="editPersonInfoButton && !mySelf.selfProfileURL" class="tempAvatar">
+            
+          </div>
+          <div v-if="!editPersonInfoButton && !selfMsg.userProfile" class="inputheadSculpture">
               <input type="file" title="headSculpture" 
               @change="handleFileUpload"
               placeholder="上传头像">
           </div>
+          <img v-if="!editPersonInfoButton && selfMsg.userProfile" :src="selfMsg.userProfile" alt="">
           <div class="personAvatorTool">
             
           </div>
@@ -82,6 +86,8 @@
       let files = event.target.files[0];
       //创建读取文件读取对象
       let reader = new FileReader();
+      let imgSrc = window.URL.createObjectURL(files);
+      selfMsg.userProfile = imgSrc;
       //判断文件类型
       if(/image/.test(files.type)){
           reader.readAsDataURL(files);
@@ -99,13 +105,11 @@
       //当文件加载完毕后调用这个函数
       reader.onload = () => {
         selfMsg.userProfile = reader.result;
-        Prompt("头像上传成功",true);
       }
   }
 
   //保存按钮
   function save(){
-    editPersonInfoButton.value = true;
     axios({
       method:"post",
       url:"/moric/changePersonalInformation",
@@ -113,9 +117,13 @@
         selfMsg
       }
     }).then((data)=>{
-      console.log(data);
+      //更新mySelf
+      mySelf.updatedMsg(selfMsg);
+      Prompt(data.alertMsg,true,1000,()=>{
+        editPersonInfoButton.value = true;
+      });
     }).catch((err)=>{
-      console.log(err);
+      Prompt(err.alertMsg,false,1000);
     })
   }
   //编辑按钮
@@ -232,9 +240,17 @@
     overflow: hidden;
     text-overflow: ellipsis;
     flex-wrap: nowrap;
+    appearance: none;
     -webkit-text-wrap: nowrap;
     justify-content: space-between;
     border-bottom: 1px solid #e9e8ec;
+  }
+  .tempAvatar{
+    font-size: 100px;
+    font-weight: 400;
+    border-radius: 50%;
+    padding: 20px;
+    border: 1px solid black;
   }
   .icon{
     display: flex;

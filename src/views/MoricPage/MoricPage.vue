@@ -46,6 +46,7 @@
             </router-view>
         </main>
         <footer class="viewsArea">
+            <SystemNotifications/>
         </footer>
     </div>
     <MoricHomeHamburgButton :clickFn="toggleWidth"></MoricHomeHamburgButton>
@@ -53,6 +54,7 @@
 
 <script setup>
     import PubSub from 'pubsub-js';
+    import SystemNotifications from '@/views/MoricPage/components/SystemNotifications'
     import MoricHomeHamburgButton from '@/views/MoricHome/components/MoricHomeHamburgButton';
     import { reactive, ref, onMounted } from 'vue';
     import { getUserInformation } from "@/controllers/userProcessingControllers";
@@ -404,6 +406,7 @@
     .viewsArea{
         width: 100%;
         height: 100%;
-        /* background: #ffff; */
+        overflow: hidden;
+        border-radius: 15px;
     }
 </style>

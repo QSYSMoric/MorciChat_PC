@@ -85,7 +85,21 @@ export const useFriendListStore = defineStore("friendList",{
             const isObjectIncluded  = this.friendApplication.find((element)=>{
                 return element.userId == userId && friendId;
             });
-            isObjectIncluded.status = states;
+            if(isObjectIncluded){
+                isObjectIncluded.status = states;
+            }
+        },
+        //查询是否存在这个好友
+        hasFriend(friendId){
+            if(!friendId){
+                console.log("参数为空");
+                return;
+            }
+            //查询此时的好友列表是否重复
+            const isObjectIncluded  = this.friendApplication.findIndex((element)=>{
+                return element.friendId == friendId;
+            });
+            return isObjectIncluded;
         },
         clear(){
             this.friendList.length = 0;

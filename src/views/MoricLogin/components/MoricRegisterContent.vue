@@ -110,9 +110,6 @@
     const avatar = reactive({
         src:null,
     });
-    userName.data = "Moric";
-    email.data = "183957330@qq.com";
-    password.data = "272919";
     //头像处理
     function handleFileUpload(event){
         register.handleFileUpload(event,avatar);

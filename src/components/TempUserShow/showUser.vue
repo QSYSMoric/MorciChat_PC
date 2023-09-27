@@ -17,14 +17,12 @@
             </div>
             <div class="userTool">
                 <div @click.stop="privateLetter" class="button" style="background-color: #fc3159;"> 私信</div>
-                <div @click.stop="addFriend" class="button" style="background-color: #595ad3;" ref="temp"> 添加好友</div>
+                <div @click.stop="addFriend" v-if="!go" class="button" style="background-color: #595ad3;" ref="temp"> 添加好友</div>
+                <div @click.stop="addFriend" v-else class="button" style="background-color: #595ad3;" ref="temp"> 请等待下</div>
             </div>
             <div class="exit" @click.stop="exit">
                 <h2></h2>
             </div>
-        </div>
-        <div class="fly" v-if="go">
-            
         </div>
     </div>
 </template>
@@ -32,6 +30,7 @@
 <script setup>
     import { useUserInformation } from '@/store/userInformation';
     import { useChatUserList } from '@/store/chatFriendListSessionStore';
+    import { useFriendListStore } from '@/store/friendListSessionStore';
     import { reactive, ref } from 'vue';
     import { useSelfStore } from '@/store/selfStore';
     import socketIO from '@/utils/socketIO'
@@ -41,6 +40,7 @@
     const userInformation = useUserInformation();
     let props = defineProps(["destroyFn","userId"]);
     const chatUserList = useChatUserList();
+    const friendList = useFriendListStore();
     //用户信息
     // 获取元素在视口中的位置信息
     //添加好友
@@ -49,14 +49,22 @@
     //添加好友操作
     function addFriend(){
         go.value = true;
-        let goMove = setTimeout(() => {
-            go.value = false;
-            clearTimeout(goMove);
-        }, 1000);
+       if(~friendList.hasFriend(props.userId)){
+        go.value = false;
+        return  Prompt("对方已是你的好友",true);
+       };
         socketIO.addNewFiendToServe(props.userId).then((data)=>{
-            console.log(data);
+            Prompt(data.alertMsg,true);
+            let goMove = setTimeout(() => {
+                go.value = false;
+                clearTimeout(goMove);
+            }, 1000);
         }).catch((err)=>{
-            console.log(err);
+            Prompt(err.alertMsg,false);
+            let goMove = setTimeout(() => {
+                go.value = false;
+                clearTimeout(goMove);
+            }, 1000);
         });
     }
     //页面信息

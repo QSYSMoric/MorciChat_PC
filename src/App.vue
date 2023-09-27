@@ -95,6 +95,7 @@ export default {
   *::-webkit-scrollbar-thumb:hover{
       opacity: .2;
       background-color: rgba(0,0,0,.5);
+      background-color: transparent;
       transition: 0s;
   }
   img{
